@@ -1,5 +1,11 @@
+#ifndef MODEL_H
+#define MODEL_H
 
 #include <glm/glm.hpp>
+#include <string>
+#include <vector>
+
+#include "../Libs/tiny_obj_loader.h"
 
 class Model{
 public:
@@ -7,15 +13,20 @@ public:
 
 	void render(glm::mat4 projection, glm::mat4 model, glm::mat4 view);
 private:
-	std::vector<unsigned int> vao;
+	std::vector<unsigned int> vaos;
 	std::vector<unsigned int> shaders;
 	std::vector<unsigned int> textures;
 
-	std::string directory;
+	std::string objDir;
 	std::vector<tinyobj::shape_t> shapes;
 	std::vector<tinyobj::material_t> materials;
 
 	// Generation methods
-	unsigned int genVao();
-	unsigned int genTexture();
-}
+	void genVaos();
+	void loadVao(unsigned int i);
+	void genTextures();
+	void loadTexture(std::string path);
+	void loadDefaultTexture();
+};
+
+#endif
