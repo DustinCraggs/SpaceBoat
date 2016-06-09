@@ -5,6 +5,10 @@
 #include <vector>
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
+#include <iostream>
+
+#include <glm/glm.hpp>
+#include <glm/gtc/type_ptr.hpp>
 
 #define STB_IMAGE_IMPLEMENTATION
 #include "../Libs/stb_image.h"
@@ -128,6 +132,8 @@ void Model::renderShape(unsigned int i, glm::mat4 projection, glm::mat4 model, g
 	unsigned int PID = shaders[i];
 	glUseProgram(PID);
 
+	glm::mat4 modelview = model * view;
+
 	// Load transformation matrices
 	GLint viewHandle = glGetUniformLocation(PID, "view_matrix");
 	glUniformMatrix4fv(viewHandle, 1, GL_FALSE, glm::value_ptr(view));
@@ -149,9 +155,9 @@ void Model::renderShape(unsigned int i, glm::mat4 projection, glm::mat4 model, g
 	GLint diffHandle = glGetUniformLocation(PID, "diffuse");
 	GLint specHandle = glGetUniformLocation(PID, "specular");
 	GLint shininessHandle = glGetUniformLocation(PID, "shininess");
-	glUniform3fv(ambientHandle, 1, (materials[matID].ambient.data()));
-	glUniform3fv(diffHandle, 1, materials[matID].diffuse.data());
-	glUniform3fv(specHandle, 1, materials[matID].specular.data());
+	glUniform3fv(ambientHandle, 1, materials[matID].ambient);
+	glUniform3fv(diffHandle, 1, materials[matID].diffuse);
+	glUniform3fv(specHandle, 1, materials[matID].specular);
 	glUniform1fv(shininessHandle, 1, &materials[matID].shininess);
 
 	// Load textures
@@ -160,20 +166,10 @@ void Model::renderShape(unsigned int i, glm::mat4 projection, glm::mat4 model, g
 	GLint diffmapHandle = glGetUniformLocation(PID, "diffmap");
 	glUniform1i(diffmapHandle, matID);
 
-	glBindVertexArray(VAOs[i]);
+	glBindVertexArray(vaos[i]);
 	glDrawElements(GL_TRIANGLES, shapes[i].mesh.indices.size() * sizeof(unsigned int), GL_UNSIGNED_INT, (void*)0);
 
 	glBindVertexArray(0);
-}
-
-
-// *** TEST ***
-int main(){
-	glewExperimental = true;
-	if( glewInit() != GLEW_OK ){
-		fprintf(stderr, "GLEW initialisation failed\n");
-		exit(1);
-	}
 }
 
 

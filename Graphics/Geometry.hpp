@@ -12,7 +12,7 @@ public:
 	virtual void render(glm::mat4 projection, glm::mat4 model, glm::mat4 view) = 0;
 
 protected:
-	std::vector<unsigned int> vao;
+	std::vector<unsigned int> vaos;
 	std::vector<unsigned int> shaders;
 	std::vector<unsigned int> textures;
 };

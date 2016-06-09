@@ -15,10 +15,6 @@ public:
 
 	void render(glm::mat4 projection, glm::mat4 model, glm::mat4 view);
 private:
-	std::vector<unsigned int> vaos;
-	std::vector<unsigned int> shaders;
-	std::vector<unsigned int> textures;
-
 	std::string objDir;
 	std::vector<tinyobj::shape_t> shapes;
 	std::vector<tinyobj::material_t> materials;

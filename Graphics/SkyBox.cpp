@@ -30,7 +30,7 @@ SkyBox::SkyBox() {
 void SkyBox::render(glm::mat4 projection, glm::mat4 model, glm::mat4 view) {
     glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_CUBE_MAP, textures[activeTexture]);
-    glBindVertexArray(vao[0]);
+    glBindVertexArray(vaos[0]);
     glDrawArrays(GL_TRIANGLES, 0, CUBE_NUM_FACES * TRIS_PER_FACE * VALS_PER_VERT);
 }
 
@@ -149,5 +149,5 @@ void SkyBox::genVao() {
     // Un-bind
 	glBindVertexArray(0);
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
-	vao.push_back(vaoHandle);
+	vaos.push_back(vaoHandle);
 }
