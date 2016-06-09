@@ -7,9 +7,9 @@
 #include <GLFW/glfw3.h>
 
 #define STB_IMAGE_IMPLEMENTATION
-#include "stb_image.h"
+#include "../Libs/stb_image.h"
 
-#include "tiny_obj_loader.h"
+#include "../Libs/tiny_obj_loader.h"
 
 #define VALS_PER_VERT 3
 #define VALS_PER_NORM 3
@@ -117,16 +117,64 @@ void Model::loadDefaultTexture(){
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, 1, 1, 0, GL_RGB, GL_UNSIGNED_BYTE, colour);
 }
 
+void Model::render(glm::mat4 projection, glm::mat4 model, glm::mat4 view){
+	// Render each shape
+	for( int i=0; i<shapes.size(); i++ ){
+		renderShape(i, projection, model, view);
+	}
+}
+
+void Model::renderShape(unsigned int i, glm::mat4 projection, glm::mat4 model, glm::mat4 view){
+	unsigned int PID = shaders[i];
+	glUseProgram(PID);
+
+	// Load transformation matrices
+	GLint viewHandle = glGetUniformLocation(PID, "view_matrix");
+	glUniformMatrix4fv(viewHandle, 1, GL_FALSE, glm::value_ptr(view));
+
+	GLint modelViewHandle = glGetUniformLocation(PID, "modelview_matrix");
+	glUniformMatrix4fv(modelViewHandle, 1, GL_FALSE, glm::value_ptr(modelview));
+
+	GLint normalHandle = glGetUniformLocation(PID, "normal_matrix");
+	glm::mat3 normal(modelview);
+	glUniformMatrix3fv(normalHandle, 1, GL_FALSE, glm::value_ptr(normal));
+
+	GLint projectionHandle = glGetUniformLocation(PID, "projection_matrix");
+	glUniformMatrix4fv(projectionHandle, 1, GL_FALSE, glm::value_ptr(projection));
+
+	unsigned int matID = shapes[i].mesh.material_ids[0];
+
+	// Load lighting material properties
+	GLint ambientHandle = glGetUniformLocation(PID, "ambient");
+	GLint diffHandle = glGetUniformLocation(PID, "diffuse");
+	GLint specHandle = glGetUniformLocation(PID, "specular");
+	GLint shininessHandle = glGetUniformLocation(PID, "shininess");
+	glUniform3fv(ambientHandle, 1, (materials[matID].ambient.data()));
+	glUniform3fv(diffHandle, 1, materials[matID].diffuse.data());
+	glUniform3fv(specHandle, 1, materials[matID].specular.data());
+	glUniform1fv(shininessHandle, 1, &materials[matID].shininess);
+
+	// Load textures
+	glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_2D, textures[i]);
+	GLint diffmapHandle = glGetUniformLocation(PID, "diffmap");
+	glUniform1i(diffmapHandle, matID);
+
+	glBindVertexArray(VAOs[i]);
+	glDrawElements(GL_TRIANGLES, shapes[i].mesh.indices.size() * sizeof(unsigned int), GL_UNSIGNED_INT, (void*)0);
+
+	glBindVertexArray(0);
+}
 
 
 // *** TEST ***
-// int main(){
-// 	glewExperimental = true;
-// 	if( glewInit() != GLEW_OK ){
-// 		fprintf(stderr, "GLEW initialisation failed\n");
-// 		exit(1);
-// 	}
-// }
+int main(){
+	glewExperimental = true;
+	if( glewInit() != GLEW_OK ){
+		fprintf(stderr, "GLEW initialisation failed\n");
+		exit(1);
+	}
+}
 
 
 

@@ -14,7 +14,6 @@ public:
 
 	glm::mat4 transformation;
 private:
-
 	void updateTransformation();
 
 	// Getting tranformation properties

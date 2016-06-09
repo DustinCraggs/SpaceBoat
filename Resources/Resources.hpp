@@ -6,7 +6,7 @@
 // #include "Camera.hpp"
 
 #include <string>
-// #include <map>
+#include <map>
 
 class Resources{
 public:
@@ -14,18 +14,28 @@ public:
 	// Logic
 	// Get
 	Entity *getEntityData();
+	Entity *getEntity(unsigned int i);
+	
 	// Set
+	unsigned int addEntity(Entity entity);
 
 	// Physics
 	// Get
 	ParticleSystem *getParticleData();
+	
 	// Set
+	unsigned int addParticleSystem(ParticleSystem particleSystem);
 
 	// Graphics
 	// Get
 	Model *getModelData();
+	Model *getModel(unsigned int i);
+	Model *getModel(std::string key);
+
+	Camera *getCamera();
+
 	// Set
-	void addModel(Model model, std::string name);
+	unsigned int addModel(Model model, std::string name);
 private:
 	float dt;
 	// Logic

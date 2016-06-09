@@ -18,10 +18,22 @@ Entity *Resources::getEntityData(){
 	return entities;
 }
 
+// Set
+unsigned int Resources::addEntity(Entity entity){
+	entities[nEntities] = entity;
+	return nEntities++;
+}
+
 // Physics
 // Get
 ParticleSystem *Resources::getParticleData(){
 	return particleSystems;
+}
+
+// Set
+unsigned int Resources::addParticleSystem(ParticleSystem particleSystem){
+	particleSystems[nParticleSystems] = particleSystem;
+	return nParticleSystems++;
 }
 
 // Graphics
@@ -31,8 +43,10 @@ Model *Resources::getModelData(){
 }
 
 // Set
-void Resources::addModel(Model model, std::string name){
+unsigned int Resources::addModel(Model model, std::string name){
 	models[nModels] = model;
+	modelNames[name] = nModels;
+	return nModels++;
 }
 
 
