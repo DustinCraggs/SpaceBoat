@@ -5,16 +5,17 @@
 
 class Entity{
 public:
+	Entity(Geometry*);
 	Geometry *geometry;
-
+	void render(glm::mat4 projection, glm::mat4 camera);
 	glm::vec3 position;
-	glm::vec orientation;
+	glm::vec3 orientation;
 	glm::vec3 scale;
 
 	glm::mat4 transformation;
 private:
-	Entity(Model *model);
-	void render(glm::mat4 projection, glm::mat4 camera, unsigned int PID);
+
+	void updateTransformation();
 
 	// Getting tranformation properties
 	glm::mat4 getTransform();
@@ -46,6 +47,6 @@ private:
 	void stretch(glm::vec3 stretchFactors);
 	void stretch(float xstretch, float ystretch, float zstretch);
 	void expand(float scaleFactor);
-}
+};
 
 #endif

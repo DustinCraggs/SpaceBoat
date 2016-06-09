@@ -28,15 +28,9 @@ SkyBox::SkyBox() {
 }
 
 void SkyBox::render(glm::mat4 projection, glm::mat4 model, glm::mat4 view) {
-    cout << "building skybox" << endl;
-}
-
-
-void SkyBox::render() {
     glBindVertexArray(vao[0]);
-    glDrawArrays(GL_TRIANGLES, 0, CUBE_NUM_FACES * TRIS_PER_FACE * VALS_PER_VERT);
+    glDrawArrays(GL_TRIANGLES, 0, CUBE_NUM_FACES * TRIS_PER_FACE * VALS_PER_VERT); 
 }
-
 
 void SkyBox::loadNewTexture(const string& directory, const vector<string>& filepaths) {
 	string::const_iterator it = directory.end();
