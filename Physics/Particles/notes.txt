@@ -1,0 +1,17 @@
+
+Templates
+https://isocpp.org/wiki/faq/templates#template-specialization-piecemeal
+
+Particle rendering
+https://www.opengl.org/wiki/Buffer_Object#Data_Specification
+http://stackoverflow.com/questions/15821969/what-is-the-proper-way-to-modify-opengl-vertex-buffer
+http://www.stevestreeting.com/2007/03/16/glmapbuffer-how-i-mock-thee/
+
+
+With geometry shader
+http://www.mbsoftworks.sk/index.php?page=tutorials&series=1&tutorial=26
+
+
+Data structures
+http://gamedev.stackexchange.com/questions/56959/best-way-to-keep-track-of-game-objects
+http://gamedev.stackexchange.com/questions/33888/what-is-the-most-efficient-container-to-store-dynamic-game-objects-in
