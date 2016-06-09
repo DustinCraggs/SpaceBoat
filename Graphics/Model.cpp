@@ -93,6 +93,7 @@ void Model::genTextures(){
 	// Load each texture
 	glActiveTexture(GL_TEXTURE0);
 	for( int i=0; i<materials.size(); i++ ){
+		glBindTexture(GL_TEXTURE_2D, textures[i]);
 		std::string texname = materials[i].diffuse_texname;
 		if( !texname.empty() ){
 			loadTexture(texname);

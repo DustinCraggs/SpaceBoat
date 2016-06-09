@@ -23,9 +23,9 @@ public:
 	void loadNewTexture(const std::string& director, 
 		const std::vector<std::string>& filepaths);
 
-	unsigned int activeTextureID;
+	unsigned int activeTexture;
 
-	void setActiveTextureID(unsigned int);
+	void cycleTexture();
 
 private:
 	void genVao();

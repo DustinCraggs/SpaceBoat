@@ -32,8 +32,8 @@ Shader.o: Libs/Shader.cpp Libs/Shader.hpp
 CubeMapTexture.o: CubeMapTexture.cpp CubeMapTexture.hpp
 	g++ $(I_flags) $(flags) -c Graphics/CubeMapTexture.cpp $(endthing)
 
-test: cubemap.o SkyBox.o Shader.o Entity.o
-	g++ $(I_flags) $(flags) -o test cubemap.o SkyBox.o Shader.o Entity.o $(endthing)
+test: cubemap.o SkyBox.o Shader.o Entity.o Model.o tiny_obj_loader.o
+	g++ $(I_flags) $(flags) -o test cubemap.o SkyBox.o Shader.o Entity.o Model.o tiny_obj_loader.o $(endthing)
 
 cubemap.o: cubemap.cpp
 	g++ $(I_flags) $(flags) -c cubemap.cpp $(endthing)
@@ -41,8 +41,10 @@ cubemap.o: cubemap.cpp
 Entity.o: Logic/Entity.cpp Logic/Entity.hpp
 	g++ $(I_flags) $(flags) -c Logic/Entity.cpp $(endthing)
 
-Model.o: Model.cpp Model.hpp
-	g++ $(I_flags) $(flags) -c Graphics/Model.cpp $(endthing)	
+Model.o: Graphics/Model.cpp Graphics/Model.hpp
+	g++ $(I_flags) $(flags) -c Graphics/Model.cpp $(endthing)
 
+tiny_obj_loader.o: Libs/tiny_obj_loader.cc Libs/tiny_obj_loader.h	
+	g++ $(I_flags) $(flags) -c Libs/tiny_obj_loader.cc $(endthing)
 clean:
 	rm -rf *.o

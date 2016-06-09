@@ -1,13 +1,15 @@
 #ifndef MODEL_H
 #define MODEL_H
 
+#include "Geometry.hpp"
+
 #include <glm/glm.hpp>
 #include <string>
 #include <vector>
 
-#include "../Libs/tiny_obj_loader.h"
+#include "tiny_obj_loader.h"
 
-class Model{
+class Model : public Geometry {
 public:
 	Model(std::string path);
 
