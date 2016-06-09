@@ -21,10 +21,13 @@ public:
 private:
 	Resources *resources;
 
-	// Now implemented in model
+	void loadShader();
+
+
+
+	// Now implemented in model?
 	void loadObj(std::string path);
 	void loadShape();
-	void loadShader();
 	void loadTexture();
 
 };
