@@ -34,3 +34,5 @@ Model *Resources::getModelData(){
 void Resources::addModel(Model model, std::string name){
 	models[nModels] = model;
 }
+
+
