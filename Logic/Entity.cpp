@@ -28,7 +28,7 @@ void Entity::updateTransformation(){
 }
 
 // Rendering
-void Entity::render(glm::mat4 projection, glm::mat4 camera, unsigned int PID){
+void Entity::render(glm::mat4 projection, glm::mat4 camera){
 	updateTransformation();
 	geometry->render(projection, camera * transformation, camera, PID);
 }

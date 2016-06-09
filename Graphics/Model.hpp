@@ -21,6 +21,7 @@ private:
 	std::vector<tinyobj::shape_t> shapes;
 	std::vector<tinyobj::material_t> materials;
 
+	void renderShape(unsigned int i, glm::mat4 projection, glm::mat4 model, glm::mat4 view);
 	// Generation methods
 	void genVaos();
 	void loadVao(unsigned int i);
