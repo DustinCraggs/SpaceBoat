@@ -17,7 +17,7 @@ src_files += $(addprefix Physics/, $(physics))
 src_files += $(addprefix Libs/, $(libs))
 
 I_flags = $(addprefix -I, $(dirs))
-flags = -lGLEW `pkg-config --cflags glfw3` -std=c++11 -g -o cga
+flags = -lGLEW `pkg-config --cflags glfw3` -std=c++11 -g
 endthing = `pkg-config --static --libs glfw3`
 # $(info $(src))
 

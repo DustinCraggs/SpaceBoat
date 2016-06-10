@@ -3,11 +3,13 @@
 
 #include <iostream>
 #include <glm/gtc/matrix_transform.hpp>
+#include <glm/ext.hpp>
+
+using namespace std;
 
 Entity::Entity(){
 	
 }
-
 /**
  * Entity constructor simply takes pointer to Model object
  * and sets default values for position, orientation, and scale.

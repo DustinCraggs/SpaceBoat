@@ -38,6 +38,7 @@ private:
 
 	void loadModels(std::string directory);
 	void loadShaders(std::string directory);
+	void loadSkyBoxes(std::string directory);
 	unsigned int compileShader(std::string name);
 };
 

@@ -22,9 +22,12 @@ private:
 	// Loading stuff
 	void loadCharacter();
 	void loadCamera();
+
+	void loadSkyBox();
+	Resources *resources;
+
 	Camera *camera;
 	
-	Resources *resources;
 	GLFWwindow *window;
 
 	// Callbacks

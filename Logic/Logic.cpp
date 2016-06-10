@@ -83,16 +83,16 @@ void Logic::window_resize_callback(GLFWwindow *window, int x, int y){
 void Logic::loadInitialGameState(){
 	loadCamera();
 	loadCharacter();
-
+	loadSkyBox();
 	glfwSetWindowUserPointer(window, this);
 	registerCallbacks();
 }
 	
 void Logic::loadCharacter(){
-	Model *model = resources->getModel("Wavecraft2");
-	character = resources->addEntity(Entity(model));
-	model = resources->getModel("star");
-	unsigned int star = resources->addEntity(Entity(model));
+	// Model *model = resources->getModel("Wavecraft2");
+	// character = resources->addEntity(Entity(model));
+	// model = resources->getModel("star");
+	// unsigned int star = resources->addEntity(Entity(model));
 
 }
 
@@ -101,3 +101,16 @@ void Logic::loadCamera(){
 	camera->reposition(glm::vec3(0.0f, 2.0f, 50.0f));
 	camera->lookAt(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
 }
+
+void Logic::loadSkyBox() {
+	SkyBox *skyBoxModel = resources->getSkyBox("Spacebox5");
+	unsigned int skx = resources->addEntity(Entity(skyBoxModel));
+	Entity *skybox = resources->getEntity(skx);
+	skybox->resize(2.0f);
+	skybox->reposition(0.0f, 2.0f, 50.0f);
+}
+
+
+
+
+

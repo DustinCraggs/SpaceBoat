@@ -5,6 +5,7 @@
 #include "stb_image.h"
 #include <glm/glm.hpp>
 #include <vector>
+#include <glm/ext.hpp>
 #include <iostream>
 using namespace std;
 
@@ -22,28 +23,51 @@ static const GLenum types[6] = {
 };
 
 // Default Constructor
+
 SkyBox::SkyBox() {
+
+}
+
+SkyBox::SkyBox(const std::string directory, unsigned int shader) {
+    vector<string> filepaths;
+    filepaths = {"right.png", "left.png",
+                   "top.png", "bottom.png",
+                   "back.png", "front.png"};
+
+    string::const_iterator it = directory.end();
+    it--;
+    string baseDir = (*it == '/') ? directory : directory + "/";
+    for(int i=0; i<filepaths.size(); i++) {
+        filenames[i] = baseDir + filepaths[i];
+    }
+    shaders.push_back(shader);
+    unsigned int newTexID = loadTexture();
+    textures.push_back(newTexID);
     activeTexture = 0;
 	genVao();	
 }
 
 void SkyBox::render(glm::mat4 projection, glm::mat4 model, glm::mat4 view) {
+
+    unsigned int PID = shaders.at(0);
+    glUseProgram(PID);
+
+    glm::mat4 modelview = model * view;
+
+    // Load transformation matrices
+    GLint viewHandle = glGetUniformLocation(PID, "view_matrix");
+    glUniformMatrix4fv(viewHandle, 1, GL_FALSE, glm::value_ptr(view));
+
+    GLint modelViewHandle = glGetUniformLocation(PID, "modelview_matrix");
+    glUniformMatrix4fv(modelViewHandle, 1, GL_FALSE, glm::value_ptr(modelview));
+
+    GLint projectionHandle = glGetUniformLocation(PID, "projection_matrix");
+    glUniformMatrix4fv(projectionHandle, 1, GL_FALSE, glm::value_ptr(projection));
+
     glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_CUBE_MAP, textures[activeTexture]);
     glBindVertexArray(vaos[0]);
     glDrawArrays(GL_TRIANGLES, 0, CUBE_NUM_FACES * TRIS_PER_FACE * VALS_PER_VERT);
-}
-
-void SkyBox::loadNewTexture(const string& directory, const vector<string>& filepaths) {
-	string::const_iterator it = directory.end();
-	it--;
-	string baseDir = (*it == '/') ? directory : directory + "/";
-	for(int i=0; i<filepaths.size(); i++) {
-		filenames[i] = baseDir + filepaths[i];
-	}
-
-	unsigned int newTexID = loadTexture();
-	textures.push_back(newTexID);
 }
 
 // Take what is stored in the filenames array currently, and load that texture
@@ -55,7 +79,6 @@ unsigned int SkyBox::loadTexture() {
 	int x, y, n;
 	unsigned char* data;
 	for(int i=0; i<CUBE_NUM_FACES; i++) {
-        cout << filenames[i] << endl;
 		data = stbi_load(filenames[i].c_str(), &x, &y, &n, 3);
 		glTexImage2D(types[i], 0, GL_RGB, x, y, 0, GL_RGB, GL_UNSIGNED_BYTE, 
 			data);
@@ -64,19 +87,10 @@ unsigned int SkyBox::loadTexture() {
 
 	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-    // glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-    // glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-    // glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE); 
-
+    glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+    glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+    glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE); 
     return textureID;
-}
-
-void SkyBox::cycleTexture() {
-    cout << "active texture: " << activeTexture << endl;
-    activeTexture++;
-    activeTexture %= textures.size();
-    cout << "active texture: " << activeTexture << endl;
-    cout << textures.at(activeTexture) << endl;
 }
 
 // Generate the cube vao for the skybox texture
