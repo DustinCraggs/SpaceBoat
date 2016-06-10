@@ -1,5 +1,5 @@
 # Search paths
-dirs = Graphics Logic Physics Resources Libs
+dirs = Control Graphics Logic Physics Resources Libs
 
 # Source files to compile
 control = Control.cpp
@@ -17,13 +17,13 @@ src_files += $(addprefix Physics/, $(physics))
 src_files += $(addprefix Libs/, $(libs))
 
 I_flags = $(addprefix -I, $(dirs))
-flags = -lGLEW `pkg-config --cflags glfw3` -std=c++11 -g
+flags = -lGLEW `pkg-config --cflags glfw3` -std=c++11 -g -o cga
 endthing = `pkg-config --static --libs glfw3`
 # $(info $(src))
 
-all:
+all: 
 	# g++ $(I_flags) $(flags) Graphics/Graphics.cpp $(endthing)
-	g++ $(I_flags) $(flags) $(src_files) $(endthing)
+	g++ $(I_flags) $(flags) $(src_files) driver.cpp $(endthing)
 
 SkyBox.o: Graphics/SkyBox.cpp Graphics/SkyBox.hpp Graphics/Geometry.hpp
 	g++ $(I_flags) $(flags) -c Graphics/SkyBox.cpp $(endthing)

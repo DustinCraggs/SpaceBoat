@@ -1,6 +1,4 @@
 
-// Calculates Blinn Phong colour at each fragment
-
 #version 330
 
 uniform vec3 diffuse;

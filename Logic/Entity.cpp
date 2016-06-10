@@ -1,5 +1,7 @@
 #include "Entity.hpp"
 #include "Geometry.hpp"
+
+#include <iostream>
 #include <glm/gtc/matrix_transform.hpp>
 
 Entity::Entity(){

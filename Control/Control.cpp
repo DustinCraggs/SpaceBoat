@@ -4,6 +4,7 @@
 #include "Graphics.hpp"
 #include "Physics.hpp"
 
+#include <iostream>
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 
@@ -18,18 +19,15 @@
 Control::Control() : 	
 	resources(MAX_ENTS, MAX_PART_SYSTEMS, MAX_MODELS, MAX_SHADERS),
 	logic(&resources),
-	graphics(&resources){
-
+	graphics(&resources) {
 	graphics.loadGraphicsData("Assets/");
-	resources.setCamera(Camera(WINDOW_X, WINDOW_Y, (float)(M_PI/4), 0.05f, 50.0f));
-
-
+	resources.setCamera(Camera(WINDOW_X, WINDOW_Y, (float)(M_PI/4), 0.05f, 100.0f));
 }
 
 void Control::startGame(){
-	graphics.openWindow(WINDOW_X, WINDOW_Y);
+	// graphics.openWindow(WINDOW_X, WINDOW_Y);
 
-
+	logic.loadInitialGameState();
 	// Main loop
 	while( !graphics.windowShouldClose() ){
 		logic.update();

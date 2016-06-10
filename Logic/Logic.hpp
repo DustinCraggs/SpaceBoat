@@ -14,17 +14,20 @@ public:
 	Logic(Resources *resources);
 	void update();
 
-	// Loading stuff
 	void loadInitialGameState();
-	void loadCharacter();
-	void loadCamera();
 private:
 	void updateInputEvents();
 	void updateGameState();
 
+	// Loading stuff
+	void loadCharacter();
+	void loadCamera();
 	Resources *resources;
 	Camera *camera;
 	GLFWwindow *window;
+
+	// Keeping track of entities
+	unsigned int character;
 };
 
 #endif
