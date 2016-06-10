@@ -13,27 +13,25 @@
 #include <iostream>
 #include <string>
 #include <GL/glew.h>
+#include <GLFW/glfw3.h>
 
 Graphics::Graphics(Resources *resources){
 	this->resources = resources;
-	glewExperimental = true;
-	if( glewInit() != GLEW_OK ){
-		fprintf(stderr, "GLEW initialisation failed\n");
-		exit(1);
-	}
-
+	openWindow(1200, 800);
 	particleRenderer.initialise(5000);
+	std::cout << "Graphics instantiated" << std::endl;
 }
 
 
 // Loading stuff
 
 void Graphics::loadGraphicsData(std::string directory){
-	loadModels(directory + "/models");
-	loadShaders(directory + "/shaders");
+	loadShaders(directory + "Shaders/");
+	loadModels(directory + "Models/");
 }
 
 void Graphics::loadModels(std::string directory){
+	std::cout << "Loading models from " << directory << std::endl;
 	// Get names of contents of directory (might break stuff sometimes maybe)
 	std::vector<std::string> files;
 	tinydir_dir dir;
@@ -41,40 +39,72 @@ void Graphics::loadModels(std::string directory){
 	while( dir.has_next ){
 		tinydir_file file;
 		tinydir_readfile(&dir, &file);
-		if( !file.is_dir && file.extension.compare(".obj") == 0 ){
-			modelFiles.push_back(file.name);
+		if( !file.is_dir && strcmp(file.extension, "obj") == 0 ){
+			std::cout << "Found model " << file.name << std::endl;
+			files.push_back(file.name);
 		}
 		tinydir_next(&dir);
 	}
 	tinydir_close(&dir);
 
+	unsigned int shader = resources->getShader("debug_normal");
 	for( int i=0; i<files.size(); i++ ){
-		resources->addModel(Model(directory+files[i]), files[i].substr(0, files[i].size()-4));
+		std::string fileName(files[i]);
+		std::cout << "Adding model " << fileName << std::endl;
+		resources->addModel(Model(directory+files[i], shader), fileName.substr(0, files[i].size()-4));
 	}
 }
 
+void Graphics::loadSkyBox(std::string directory) {
+	std::cout << "Loading SkyBox" << std::endl;
+	// Get names of nested skybox directories
+	std::vector<std::string> directories;	
+	tinydir_dir dir;
+	tinydir_open(&dir, directory.c_str());
+	while(dir.has_next) {
+		tinydir_file file;
+		tinydir_readfile(&dir, &file);
+		if(file.is_dir) {
+			std::cout << "Found directory: " << file.name << std::endl;
+			directories.push_back(file.name);
+		}
+		tinydir_next(&dir);
+	}
+	tinydir_close(&dir);
+
+	for(int i=0; i<directories.size(); i++) {
+		std::string fileName(files.at(i));
+		std::cout << "Adding skybox " << fileName << std::endl;
+		resources->addSkyBox(SkyBox(directory+files[i]));
+	}
+}
+
+
 void Graphics::loadShaders(std::string directory){
+	std::cout << "Loading shaders" << std::endl;
 	std::vector<std::string> files;
 	tinydir_dir dir;
 	tinydir_open(&dir, directory.c_str());
 	while( dir.has_next ){
 		tinydir_file file;
 		tinydir_readfile(&dir, &file);
-		if( !file.is_dir && file.extension.compare(".vert") == 0 ){
-			modelFiles.push_back(file.name);
+		if( !file.is_dir && strcmp(file.extension, "vert") == 0 ){
+			std::cout << "Found shader " << file.name << std::endl;
+			files.push_back(file.name);
 		}
 		tinydir_next(&dir);
 	}
 	tinydir_close(&dir);
 
 	for( int i=0; i<files.size(); i++ ){
-		std::string name = files[i].substr(0, files[i].size()-5);
+		std::string fileName(files[i]);
+		std::string name = fileName.substr(0, files[i].size()-5);
+		std::cout << "Adding shader " << fileName << std::endl;
 		resources->addShader(compileShader(directory + name), name);
 	}
 }
 
-
-void Graphics::compileShader(std::string path){
+unsigned int Graphics::compileShader(std::string path){
 	unsigned int PID = LoadShaders((path + ".vert").c_str(), (path + ".frag").c_str());
 	if( PID == 0 ){
 		std::cout << "Error: Compilation of " << path << " shader failed" << std::endl;
@@ -82,6 +112,15 @@ void Graphics::compileShader(std::string path){
 	}
 	return PID;
 }
+
+void error_callback(int error, const char* description){
+	fputs(description, stderr);
+	fputs("\n", stderr);
+}
+
+// void Graphics::loadWindow(){
+
+// }
 
 void Graphics::openWindow(unsigned int xdim, unsigned int ydim){
 	// GLFW
@@ -95,6 +134,7 @@ void Graphics::openWindow(unsigned int xdim, unsigned int ydim){
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 	glfwWindowHint(GLFW_SAMPLES, 4);
 	window = glfwCreateWindow(xdim, ydim, "Assignment 3", NULL, NULL);
+	resources->setWindow(window);
 	if( !window ){
 		glfwTerminate();
 		exit(0);
@@ -102,8 +142,14 @@ void Graphics::openWindow(unsigned int xdim, unsigned int ydim){
 	glfwMakeContextCurrent(window);
 	glfwSwapInterval(1);
 
+	glewExperimental = true;
+	if( glewInit() != GLEW_OK ){
+		fprintf(stderr, "GLEW initialisation failed\n");
+		exit(1);
+	}
+
 	// GL
-	glClearColor(0.4f, 0.8f, 0.8f, 1.0f);
+	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_MULTISAMPLE);
 	glFrontFace(GL_CCW);
@@ -114,7 +160,7 @@ void Graphics::openWindow(unsigned int xdim, unsigned int ydim){
 void Graphics::renderFrame(){
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-	Camera *camera = resources.getCamera();
+	Camera *camera = resources->getCamera();
 	glm::mat4 projection = camera->getProjection();
 	glm::mat4 view = camera->getView();
 
@@ -124,6 +170,7 @@ void Graphics::renderFrame(){
 
 	glFlush();
 	glfwSwapBuffers(window);
+	glfwPollEvents();
 }
 
 void Graphics::renderEntities(glm::mat4 projection, glm::mat4 view){
@@ -136,7 +183,7 @@ void Graphics::renderEntities(glm::mat4 projection, glm::mat4 view){
 void Graphics::renderParticleSystems(glm::mat4 projection, glm::mat4 view){
 	ParticleSystem *particleSystem = resources->getParticleData();
 	for( int i=0; i<resources->particleSystemSize(); i++ ){
-		particleRenderer.render(particleSystem->getPosPointer(), particleSystem->getColPointer, particleSystem->nParticles(), particleShader);
+		particleRenderer.render(particleSystem->getPosPointer(), particleSystem->getColPointer(), particleSystem->nParticles(), particleShader);
 		particleSystem++;
 	}
 }

@@ -4,13 +4,17 @@
 #include "Model.hpp"
 #include "Entity.hpp"
 #include "Camera.hpp"
+#include "ParticleSystem.hpp"
+#include "SkyBox.hpp"
 
 #include <string>
 #include <map>
+#include <GL/glew.h>
+#include <GLFW/glfw3.h>
 
 class Resources{
 public:
-	Resources(int maxEntities, int maxParticleSystems, int maxModels);
+	Resources(unsigned int maxEntities, unsigned int maxParticleSystems, unsigned int maxModels, unsigned int maxShaders);
 	// Logic
 	// Get
 	unsigned int entitySize();
@@ -42,8 +46,10 @@ public:
 
 	// Set
 	void setCamera(Camera camera);
+	void setWindow(GLFWwindow *window);
 	unsigned int addModel(Model model, std::string name);
 	unsigned int addShader(unsigned int shader, std::string name);
+	unsigned int addSkyBox(SkyBox skybox, std::string name);
 private:
 	float dt;
 	// Logic
@@ -60,8 +66,11 @@ private:
 	Model *models;
 	std::map<std::string, unsigned int> modelNames;
 	unsigned int nShaders;
-	unsigned int shaders;
+	unsigned int *shaders;
 	std::map<std::string, unsigned int> shaderNames;
+	unsigned int nSkyBoxes;
+	SkyBox *skyBox;
+	std::map<std::string, unsigned int> skyBoxNames;
 
 	Camera camera;
 };

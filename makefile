@@ -1,14 +1,16 @@
 # Search paths
-dirs = Graphics Logic Physics Resources Libs
+dirs = Control Graphics Logic Physics Resources Libs
 
 # Source files to compile
+control = Control.cpp
 logic = Logic.cpp Entity.cpp
-graphics = Graphics.cpp Model.cpp Camera.cpp
+graphics = Graphics.cpp Model.cpp Camera.cpp Geometry.cpp ParticleRenderer.cpp Skybox.cpp CubeMapTexture.cpp
 resources = Resources.cpp
-physics = Physics.cpp
+physics = Physics.cpp ParticleSystem.cpp
 libs = tiny_obj_loader.cc Shader.cpp
 
-src_files = $(addprefix Logic/, $(logic))
+src_files = $(addprefix Control/, $(control))
+src_files += $(addprefix Logic/, $(logic))
 src_files += $(addprefix Graphics/, $(graphics))
 src_files += $(addprefix Resources/, $(resources))
 src_files += $(addprefix Physics/, $(physics))
@@ -19,9 +21,9 @@ flags = -lGLEW `pkg-config --cflags glfw3` -std=c++11 -g
 endthing = `pkg-config --static --libs glfw3`
 # $(info $(src))
 
-all:
-	g++ $(I_flags) $(flags) Graphics/Graphics.cpp $(endthing)
-	# g++ $(I_flags) $(flags) $(src_files) $(endthing)
+all: 
+	# g++ $(I_flags) $(flags) Graphics/Graphics.cpp $(endthing)
+	g++ $(I_flags) $(flags) $(src_files) driver.cpp $(endthing)
 
 SkyBox.o: Graphics/SkyBox.cpp Graphics/SkyBox.hpp Graphics/Geometry.hpp
 	g++ $(I_flags) $(flags) -c Graphics/SkyBox.cpp $(endthing)

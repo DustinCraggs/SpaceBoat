@@ -1,14 +1,17 @@
 #include "ParticleRenderer.hpp"
 
-
+#include <iostream>
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 
 void ParticleRenderer::initialise(unsigned int maxParticles){
 	this->maxParticles = maxParticles;
 	// Create initial VAO
+	std::cout << "Particle Renderer: Generating VAOs" << std::endl;
 	glGenVertexArrays(1, &vao);
 	glBindVertexArray(vao);
+
+	std::cout << "Particle Renderer: Generated VAOs" << std::endl;
 
 	glGenBuffers(1, &positionBuffer);
 	glGenBuffers(1, &colourBuffer);

@@ -11,8 +11,9 @@
 
 class Model : public Geometry {
 public:
-	Model(std::string path);
-	Model(std::string path, unsigned int);
+	Model();
+	// Model(std::string path);
+	Model(std::string path, unsigned int shader = 1);
 
 	void render(glm::mat4 projection, glm::mat4 model, glm::mat4 view);
 private:

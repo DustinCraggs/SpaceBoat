@@ -19,7 +19,34 @@
 #define VALS_PER_NORM 3
 #define VALS_PER_TEXEL 2
 
-Model::Model(std::string path){
+Model::Model(){
+
+}
+
+// Model::Model(std::string path){
+// 	// Extract path to file
+// 	int pos = path.rfind("/");
+// 	if( pos != std::string::npos ){
+// 		objDir = path.substr(0, pos + 1);
+// 	}else{
+// 		objDir = "";
+// 	}
+
+// 	// Get shapes and materials
+// 	std::string error;
+// 	bool nonfatal = tinyobj::LoadObj(shapes, materials, error, path.c_str(), objDir.c_str());
+// 	if( !error.empty() ){
+// 		std::cerr << error;
+// 	}
+// 	if( !nonfatal ){
+// 		std::cout << "Tiny obj error" << std::endl;
+// 		exit(1);
+// 	}
+// 	genVaos();
+// 	genTextures();
+// }
+
+Model::Model(std::string path, unsigned int shader){
 	// Extract path to file
 	int pos = path.rfind("/");
 	if( pos != std::string::npos ){
@@ -35,12 +62,16 @@ Model::Model(std::string path){
 		std::cerr << error;
 	}
 	if( !nonfatal ){
+		std::cout << "Tiny obj error" << std::endl;
 		exit(1);
+	}
+	
+	for( int i=0; i<shapes.size(); i++ ){
+		shaders.push_back(shader);
 	}
 	genVaos();
 	genTextures();
 }
-
 
 void Model::genVaos(){
 	vaos.resize(shapes.size());

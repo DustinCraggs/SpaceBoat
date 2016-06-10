@@ -1,3 +1,6 @@
+#ifndef GRAPHICS_H
+#define GRAPHICS_H
+
 #include "Resources.hpp"
 #include "Model.hpp"
 #include "Entity.hpp"
@@ -6,6 +9,8 @@
 
 #include "tinydir.h"
 
+#include <GL/glew.h>
+#include <GLFW/glfw3.h>
 #include <string>
 
 class Graphics{
@@ -26,13 +31,15 @@ public:
 	bool windowShouldClose();
 private:
 	Resources *resources;
+	GLFWwindow *window;
 
 	ParticleRenderer particleRenderer;
 	unsigned int particleShader;
 
 	void loadModels(std::string directory);
 	void loadShaders(std::string directory);
-	void compileShader(std::string name);
+	void loadSkyBox(std::string directory);
+	unsigned int compileShader(std::string name);
 };
 
-// int main(){}
+#endif

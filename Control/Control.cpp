@@ -1,6 +1,12 @@
+#include "Control.hpp"
+
 #include "Logic.hpp"
 #include "Graphics.hpp"
 #include "Physics.hpp"
+
+#include <iostream>
+#include <GL/glew.h>
+#include <GLFW/glfw3.h>
 
 #define WINDOW_X 1200
 #define WINDOW_Y 800
@@ -8,22 +14,20 @@
 #define MAX_ENTS 100
 #define MAX_PART_SYSTEMS 2
 #define MAX_MODELS 20
+#define MAX_SHADERS 5
 
-void Control::Control() : 	
-	resources(MAX_ENTS, MAX_PART_SYSTEMS, MAX_MODELS),
+Control::Control() : 	
+	resources(MAX_ENTS, MAX_PART_SYSTEMS, MAX_MODELS, MAX_SHADERS),
 	logic(&resources),
-	graphics(&resources){
-
+	graphics(&resources) {
 	graphics.loadGraphicsData("Assets/");
-	resources.setCamera(Camera(WINDOW_X, WINDOW_Y, (float)(M_PI/4), 0.05f, 50.0f));
-
-
+	resources.setCamera(Camera(WINDOW_X, WINDOW_Y, (float)(M_PI/4), 0.05f, 100.0f));
 }
 
-void Control::StartGame(){
-	graphics.openWindow(WINDOW_X, WINDOW_Y);
+void Control::startGame(){
+	// graphics.openWindow(WINDOW_X, WINDOW_Y);
 
-
+	logic.loadInitialGameState();
 	// Main loop
 	while( !graphics.windowShouldClose() ){
 		logic.update();

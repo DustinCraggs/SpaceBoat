@@ -1,9 +1,12 @@
+#ifndef PARTICLE_SYSTEM_H
+#define PARTICLE_SYSTEM_H
+
 #include <glm/glm.hpp>
 #include "BackSwapArray.hpp"
 
 class ParticleSystem{
 public:
-	ParticleSystem(unsigned int max_size);
+	ParticleSystem(unsigned int max_size = 10000);
 	void add(glm::vec3 position, glm::vec3 velocities, glm::vec3 colour);
 	void remove(unsigned int i);
 
@@ -26,3 +29,5 @@ private:
 	BackSwapArray<glm::vec3> velocities;
 	BackSwapArray<glm::vec3> colours;
 };
+
+#endif

@@ -34,7 +34,7 @@ void SkyBox::render(glm::mat4 projection, glm::mat4 model, glm::mat4 view) {
     glUseProgram(PID);
 
     glm::mat4 modelview = model * view;
-    cout << glm::to_string(view) << endl;
+
     // Load transformation matrices
     GLint viewHandle = glGetUniformLocation(PID, "view_matrix");
     glUniformMatrix4fv(viewHandle, 1, GL_FALSE, glm::value_ptr(view));
@@ -51,8 +51,14 @@ void SkyBox::render(glm::mat4 projection, glm::mat4 model, glm::mat4 view) {
     glDrawArrays(GL_TRIANGLES, 0, CUBE_NUM_FACES * TRIS_PER_FACE * VALS_PER_VERT);
 }
 
-void SkyBox::loadNewTexture(const string& directory, const vector<string>& filepaths) {
-	string::const_iterator it = directory.end();
+void SkyBox::loadNewTexture(const string& directory) {
+	
+    vector<string> filepaths;
+    filepaths = {"right.png", "left.png",
+                   "top.png", "bottom.png",
+                   "back.png", "front.png"};
+
+    string::const_iterator it = directory.end();
 	it--;
 	string baseDir = (*it == '/') ? directory : directory + "/";
 	for(int i=0; i<filepaths.size(); i++) {
