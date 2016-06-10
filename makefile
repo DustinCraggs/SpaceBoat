@@ -2,8 +2,8 @@
 dirs = Graphics Logic Physics Resources Libs
 
 # Source files to compile
-logic = Logic.cpp
-graphics = Graphics.cpp Model.cpp
+logic = Logic.cpp Entity.cpp
+graphics = Graphics.cpp Model.cpp Camera.cpp
 resources = Resources.cpp
 physics = Physics.cpp
 libs = tiny_obj_loader.cc Shader.cpp
@@ -46,5 +46,6 @@ Model.o: Graphics/Model.cpp Graphics/Model.hpp
 
 tiny_obj_loader.o: Libs/tiny_obj_loader.cc Libs/tiny_obj_loader.h	
 	g++ $(I_flags) $(flags) -c Libs/tiny_obj_loader.cc $(endthing)
+
 clean:
 	rm -rf *.o

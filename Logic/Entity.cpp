@@ -28,9 +28,9 @@ void Entity::updateTransformation(){
 }
 
 // Rendering
-void Entity::render(glm::mat4 projection, glm::mat4 camera){
+void Entity::render(glm::mat4 projection, glm::mat4 view){
 	updateTransformation();
-	geometry->render(projection, camera * transformation, camera);
+	geometry->render(projection, transformation, view);
 }
 
 // Getting tranformation properties

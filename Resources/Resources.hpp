@@ -3,7 +3,7 @@
 
 #include "Model.hpp"
 #include "Entity.hpp"
-// #include "Camera.hpp"
+#include "Camera.hpp"
 
 #include <string>
 #include <map>
@@ -13,6 +13,7 @@ public:
 	Resources(int maxEntities, int maxParticleSystems, int maxModels);
 	// Logic
 	// Get
+	unsigned int entitySize();
 	Entity *getEntityData();
 	Entity *getEntity(unsigned int i);
 	
@@ -21,6 +22,7 @@ public:
 
 	// Physics
 	// Get
+	unsigned int particleSystemSize();
 	ParticleSystem *getParticleData();
 	
 	// Set
@@ -28,28 +30,40 @@ public:
 
 	// Graphics
 	// Get
+	unsigned int modelSize();
 	Model *getModelData();
 	Model *getModel(unsigned int i);
 	Model *getModel(std::string key);
+	unsigned int getShader(unsigned int i);
+	unsigned int getShader(std::string key);
 
 	Camera *getCamera();
+	GLFWwindow *getWindow();
 
 	// Set
+	void setCamera(Camera camera);
 	unsigned int addModel(Model model, std::string name);
+	unsigned int addShader(unsigned int shader, std::string name);
 private:
 	float dt;
 	// Logic
-	int nEntities;
+	unsigned int nEntities;
 	Entity *entities;
 
 	// Physics
-	int nParticleSystems;
+	unsigned int nParticleSystems;
 	ParticleSystem *particleSystems;
 	
 	// Graphics
-	int nModels;
+	GLFWwindow *window;
+	unsigned int nModels;
 	Model *models;
-	std::map<std::string, int> modelNames;
+	std::map<std::string, unsigned int> modelNames;
+	unsigned int nShaders;
+	unsigned int shaders;
+	std::map<std::string, unsigned int> shaderNames;
+
+	Camera camera;
 };
 
 #endif

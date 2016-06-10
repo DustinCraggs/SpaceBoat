@@ -133,7 +133,6 @@ void Model::renderShape(unsigned int i, glm::mat4 projection, glm::mat4 model, g
 	glUseProgram(PID);
 
 	glm::mat4 modelview = model * view;
-
 	// Load transformation matrices
 	GLint viewHandle = glGetUniformLocation(PID, "view_matrix");
 	glUniformMatrix4fv(viewHandle, 1, GL_FALSE, glm::value_ptr(view));
