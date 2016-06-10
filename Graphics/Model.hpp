@@ -1,23 +1,21 @@
 #ifndef MODEL_H
 #define MODEL_H
 
+#include "Geometry.hpp"
+
 #include <glm/glm.hpp>
 #include <string>
 #include <vector>
 
-#include "../Libs/tiny_obj_loader.h"
+#include "tiny_obj_loader.h"
 
-class Model{
+class Model : public Geometry {
 public:
 	Model(std::string path);
 	Model(std::string path, unsigned int);
 
 	void render(glm::mat4 projection, glm::mat4 model, glm::mat4 view);
 private:
-	std::vector<unsigned int> vaos;
-	std::vector<unsigned int> shaders;
-	std::vector<unsigned int> textures;
-
 	std::string objDir;
 	std::vector<tinyobj::shape_t> shapes;
 	std::vector<tinyobj::material_t> materials;
