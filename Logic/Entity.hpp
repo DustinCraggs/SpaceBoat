@@ -3,24 +3,11 @@
 
 #include "Geometry.hpp"
 
-class Entity{
+class Entity {
+	
 public:
 	Entity(Geometry*);
-	Geometry *geometry;
-	void render(glm::mat4 projection, glm::mat4 camera);
-	glm::vec3 position;
-	glm::vec3 orientation;
-	glm::vec3 scale;
-
-	glm::mat4 transformation;
-private:
-	void updateTransformation();
-
-	// Getting tranformation properties
-	glm::mat4 getTransform();
-	glm::vec3 getPosition();
-	glm::vec3 getOrientation();
-	glm::vec3 getScale();
+	void render(glm::mat4 projection, glm::mat4 view);
 
 	// Setting tranformation properties
 	void reposition(glm::vec3 pos);
@@ -46,6 +33,22 @@ private:
 	void stretch(glm::vec3 stretchFactors);
 	void stretch(float xstretch, float ystretch, float zstretch);
 	void expand(float scaleFactor);
+private:
+
+	glm::vec3 position;
+	glm::vec3 orientation;
+	glm::vec3 scale;
+	glm::mat4 transformation;
+
+	Geometry *geometry;
+
+	void updateTransformation();
+
+	// Getting tranformation properties
+	glm::mat4 getTransform();
+	glm::vec3 getPosition();
+	glm::vec3 getOrientation();
+	glm::vec3 getScale();
 };
 
 #endif
