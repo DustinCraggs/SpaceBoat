@@ -22,9 +22,17 @@ private:
 	// Loading stuff
 	void loadCharacter();
 	void loadCamera();
-	Resources *resources;
 	Camera *camera;
+	
+	Resources *resources;
 	GLFWwindow *window;
+
+	// Callbacks
+	void registerCallbacks();
+	static void key_callback(GLFWwindow *window, int key, int scancode, int action, int mods);
+	static void click_callback(GLFWwindow *window, int button, int action, int mods);
+	static void cursor_position_callback(GLFWwindow *window, double xpos, double ypos);
+	static void window_resize_callback(GLFWwindow *window, int x, int y);
 
 	// Keeping track of entities
 	unsigned int character;
