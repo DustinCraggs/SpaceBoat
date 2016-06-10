@@ -2,10 +2,15 @@
 
 #include "Model.hpp"
 #include "Entity.hpp"
+#include "Camera.hpp"
+#include "ParticleSystem.hpp"
+
+#include <GL/glew.h>
+#include <GLFW/glfw3.h>
 
 // TODO: Error checking for exceeding bounds of containers
 
-Resources::Resources(int maxEntities, int maxParticleSystems, int maxModels, int maxShaders){
+Resources::Resources(unsigned int maxEntities, unsigned int maxParticleSystems, unsigned int maxModels, unsigned int maxShaders){
 	nEntities = 0;
 	nParticleSystems = 0;
 	nModels = 0;
@@ -74,18 +79,22 @@ unsigned int Resources::getShader(std::string key){
 	return shaders[shaderNames[key]];
 }
 
-Camera *getCamera(){
+Camera *Resources::getCamera(){
 	return &camera;
 }
 
 GLFWwindow *Resources::getWindow(){
-
+	return window;
 }
 
 // Set
 
 void Resources::setCamera(Camera camera){
 	this->camera = camera;
+}
+
+void Resources::setWindow(GLFWwindow *window){
+	this->window = window;
 }
 
 unsigned int Resources::addModel(Model model, std::string name){
@@ -95,7 +104,7 @@ unsigned int Resources::addModel(Model model, std::string name){
 }
 
 unsigned int Resources::addShader(unsigned int shader, std::string name){
-	shaders[i] = shader;
+	shaders[nShaders] = shader;
 	shaderNames[name] = nShaders;
 	return nShaders++;
 }
@@ -103,7 +112,7 @@ unsigned int Resources::addShader(unsigned int shader, std::string name){
 
 
 
-
+int main(){}
 
 
 

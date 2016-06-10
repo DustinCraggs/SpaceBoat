@@ -1,8 +1,13 @@
+#ifndef LOGIC_H
+#define LOGIC_H
+
 // Logic should compute time at start of next frame commit that to Resources
 // for use by other sub-systems
 
 #include "Resources.hpp"
 #include "Entity.hpp"
+
+#include <GLFW/glfw3.h>
 
 class Logic{
 public:
@@ -21,3 +26,5 @@ private:
 	Camera *camera;
 	GLFWwindow *window;
 };
+
+#endif

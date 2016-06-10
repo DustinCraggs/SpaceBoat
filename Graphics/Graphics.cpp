@@ -13,6 +13,7 @@
 #include <iostream>
 #include <string>
 #include <GL/glew.h>
+#include <GLFW/glfw3.h>
 
 Graphics::Graphics(Resources *resources){
 	this->resources = resources;
@@ -29,8 +30,8 @@ Graphics::Graphics(Resources *resources){
 // Loading stuff
 
 void Graphics::loadGraphicsData(std::string directory){
-	loadModels(directory + "/models");
-	loadShaders(directory + "/shaders");
+	loadModels(directory + "/Models");
+	loadShaders(directory + "/Shaders");
 }
 
 void Graphics::loadModels(std::string directory){
@@ -41,15 +42,16 @@ void Graphics::loadModels(std::string directory){
 	while( dir.has_next ){
 		tinydir_file file;
 		tinydir_readfile(&dir, &file);
-		if( !file.is_dir && file.extension.compare(".obj") == 0 ){
-			modelFiles.push_back(file.name);
+		if( !file.is_dir && strcmp(file.extension, ".obj") == 0 ){
+			files.push_back(file.name);
 		}
 		tinydir_next(&dir);
 	}
 	tinydir_close(&dir);
 
 	for( int i=0; i<files.size(); i++ ){
-		resources->addModel(Model(directory+files[i]), files[i].substr(0, files[i].size()-4));
+		std::string fileName(files[i]);
+		resources->addModel(Model(directory+files[i]), fileName.substr(0, files[i].size()-4));
 	}
 }
 
@@ -60,27 +62,33 @@ void Graphics::loadShaders(std::string directory){
 	while( dir.has_next ){
 		tinydir_file file;
 		tinydir_readfile(&dir, &file);
-		if( !file.is_dir && file.extension.compare(".vert") == 0 ){
-			modelFiles.push_back(file.name);
+		if( !file.is_dir && strcmp(file.extension, ".vert") == 0 ){
+			files.push_back(file.name);
 		}
 		tinydir_next(&dir);
 	}
 	tinydir_close(&dir);
 
 	for( int i=0; i<files.size(); i++ ){
-		std::string name = files[i].substr(0, files[i].size()-5);
+		std::string fileName(files[i]);
+		std::string name = fileName.substr(0, files[i].size()-5);
 		resources->addShader(compileShader(directory + name), name);
 	}
 }
 
 
-void Graphics::compileShader(std::string path){
+unsigned int Graphics::compileShader(std::string path){
 	unsigned int PID = LoadShaders((path + ".vert").c_str(), (path + ".frag").c_str());
 	if( PID == 0 ){
 		std::cout << "Error: Compilation of " << path << " shader failed" << std::endl;
 		exit(1);
 	}
 	return PID;
+}
+
+void error_callback(int error, const char* description){
+	fputs(description, stderr);
+	fputs("\n", stderr);
 }
 
 void Graphics::openWindow(unsigned int xdim, unsigned int ydim){
@@ -95,6 +103,7 @@ void Graphics::openWindow(unsigned int xdim, unsigned int ydim){
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 	glfwWindowHint(GLFW_SAMPLES, 4);
 	window = glfwCreateWindow(xdim, ydim, "Assignment 3", NULL, NULL);
+	resources->setWindow(window);
 	if( !window ){
 		glfwTerminate();
 		exit(0);
@@ -114,7 +123,7 @@ void Graphics::openWindow(unsigned int xdim, unsigned int ydim){
 void Graphics::renderFrame(){
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-	Camera *camera = resources.getCamera();
+	Camera *camera = resources->getCamera();
 	glm::mat4 projection = camera->getProjection();
 	glm::mat4 view = camera->getView();
 
@@ -136,7 +145,7 @@ void Graphics::renderEntities(glm::mat4 projection, glm::mat4 view){
 void Graphics::renderParticleSystems(glm::mat4 projection, glm::mat4 view){
 	ParticleSystem *particleSystem = resources->getParticleData();
 	for( int i=0; i<resources->particleSystemSize(); i++ ){
-		particleRenderer.render(particleSystem->getPosPointer(), particleSystem->getColPointer, particleSystem->nParticles(), particleShader);
+		particleRenderer.render(particleSystem->getPosPointer(), particleSystem->getColPointer(), particleSystem->nParticles(), particleShader);
 		particleSystem++;
 	}
 }

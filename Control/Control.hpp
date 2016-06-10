@@ -1,9 +1,15 @@
+#ifndef CONTROL_H
+#define CONTROL_H
+
 #include "Logic.hpp"
 #include "Graphics.hpp"
 #include "Physics.hpp"
 
+#include <GLFW/glfw3.h>
+
 class Control{
 public:
+	Control();
 	void startGame();
 private:
 	void initialiseGraphics();
@@ -15,3 +21,5 @@ private:
 	Logic logic;
 	// Physics physics;
 };
+
+#endif

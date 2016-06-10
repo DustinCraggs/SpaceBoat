@@ -2,6 +2,10 @@
 #include "Geometry.hpp"
 #include <glm/gtc/matrix_transform.hpp>
 
+Entity::Entity(){
+	
+}
+
 /**
  * Entity constructor simply takes pointer to Model object
  * and sets default values for position, orientation, and scale.

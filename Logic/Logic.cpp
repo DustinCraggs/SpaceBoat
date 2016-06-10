@@ -2,6 +2,8 @@
 #include "Logic.hpp"
 #include "Camera.hpp"
 
+#include <GLFW/glfw3.h>
+
 Logic::Logic(Resources *resources){
 	this->resources = resources;
 	window = resources->getWindow();

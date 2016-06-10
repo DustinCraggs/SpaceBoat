@@ -11,6 +11,7 @@
 
 class Model : public Geometry {
 public:
+	Model();
 	Model(std::string path);
 	Model(std::string path, unsigned int);
 

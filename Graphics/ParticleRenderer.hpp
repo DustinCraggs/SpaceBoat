@@ -1,4 +1,5 @@
-
+#ifndef PARTICLE_RENDERER_H
+#define PARTICLE_RENDERER_H
 
 class ParticleRenderer{
 	// Camera *camera;
@@ -8,7 +9,9 @@ class ParticleRenderer{
 	int maxParticles;
 public:
 	// ParticleRenderer(){}
-	void initialise(int maxParticles = 10000);
+	void initialise(unsigned int maxParticles = 10000);
 	void render(float *positions, float *colours, int n, unsigned int shaderPID);
 	void upload(float *positions, float *colours, int n);
 };
+
+#endif

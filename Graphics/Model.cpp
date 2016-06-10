@@ -19,6 +19,10 @@
 #define VALS_PER_NORM 3
 #define VALS_PER_TEXEL 2
 
+Model::Model(){
+
+}
+
 Model::Model(std::string path){
 	// Extract path to file
 	int pos = path.rfind("/");
