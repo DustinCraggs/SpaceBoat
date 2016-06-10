@@ -10,6 +10,7 @@
 class Model{
 public:
 	Model(std::string path);
+	Model(std::string path, unsigned int);
 
 	void render(glm::mat4 projection, glm::mat4 model, glm::mat4 view);
 private:

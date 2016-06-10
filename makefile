@@ -2,8 +2,8 @@
 dirs = Graphics Logic Physics Resources Libs
 
 # Source files to compile
-logic = Logic.cpp
-graphics = Graphics.cpp
+logic = Logic.cpp Entity.cpp
+graphics = Graphics.cpp Model.cpp Camera.cpp
 resources = Resources.cpp
 physics = Physics.cpp
 libs = tiny_obj_loader.cc
@@ -20,5 +20,5 @@ endthing = `pkg-config --static --libs glfw3`
 # $(info $(src))
 
 all:
-	g++ $(I_flags) $(flags) Graphics/Graphics.cpp $(endthing)
-	# g++ $(I_flags) $(flags) $(src_files) $(endthing)
+	# g++ $(I_flags) $(flags) Graphics/Graphics.cpp $(endthing)
+	g++ $(I_flags) $(flags) $(src_files) $(endthing)

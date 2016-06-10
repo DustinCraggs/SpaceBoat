@@ -14,7 +14,7 @@ public:
 	glm::mat4 transformation;
 private:
 	Entity(Model *model);
-	void render(glm::mat4 projection, glm::mat4 camera);
+	void render(glm::mat4 projection, glm::mat4 view);
 
 	// Getting tranformation properties
 	glm::mat4 getTransform();

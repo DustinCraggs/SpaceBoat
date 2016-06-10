@@ -126,7 +126,7 @@ void Model::render(glm::mat4 projection, glm::mat4 model, glm::mat4 view){
 void Model::renderShape(unsigned int i, glm::mat4 projection, glm::mat4 model, glm::mat4 view){
 	unsigned int PID = shaders[i];
 	glUseProgram(PID);
-
+	
 	// Load transformation matrices
 	GLint viewHandle = glGetUniformLocation(PID, "view_matrix");
 	glUniformMatrix4fv(viewHandle, 1, GL_FALSE, glm::value_ptr(view));
