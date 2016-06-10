@@ -28,6 +28,7 @@ Graphics::Graphics(Resources *resources){
 void Graphics::loadGraphicsData(std::string directory){
 	loadShaders(directory + "Shaders/");
 	loadModels(directory + "Models/");
+	loadSkyBoxes(directory + "SkyBoxes/");
 }
 
 void Graphics::loadModels(std::string directory){
@@ -55,7 +56,7 @@ void Graphics::loadModels(std::string directory){
 	}
 }
 
-void Graphics::loadSkyBox(std::string directory) {
+void Graphics::loadSkyBoxes(std::string directory) {
 	std::cout << "Loading SkyBox" << std::endl;
 	// Get names of nested skybox directories
 	std::vector<std::string> directories;	
@@ -64,18 +65,18 @@ void Graphics::loadSkyBox(std::string directory) {
 	while(dir.has_next) {
 		tinydir_file file;
 		tinydir_readfile(&dir, &file);
-		if(file.is_dir) {
+		if(file.is_dir && file.name[0] != '.') {
 			std::cout << "Found directory: " << file.name << std::endl;
 			directories.push_back(file.name);
 		}
 		tinydir_next(&dir);
 	}
 	tinydir_close(&dir);
-
+	unsigned int shader = resources->getShader("cubemap");
 	for(int i=0; i<directories.size(); i++) {
-		std::string fileName(files.at(i));
+		std::string fileName(directories.at(i));
 		std::cout << "Adding skybox " << fileName << std::endl;
-		resources->addSkyBox(SkyBox(directory+files[i]));
+		resources->addSkyBox(SkyBox(directory+directories[i], shader), fileName.substr(0, directories[i].size()-4));
 	}
 }
 

@@ -15,9 +15,10 @@
 #define MAX_PART_SYSTEMS 2
 #define MAX_MODELS 20
 #define MAX_SHADERS 5
+#define MAX_SKYBOXES 2
 
 Control::Control() : 	
-	resources(MAX_ENTS, MAX_PART_SYSTEMS, MAX_MODELS, MAX_SHADERS),
+	resources(MAX_ENTS, MAX_PART_SYSTEMS, MAX_MODELS, MAX_SHADERS, MAX_SKYBOXES),
 	logic(&resources),
 	graphics(&resources) {
 	graphics.loadGraphicsData("Assets/");

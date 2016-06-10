@@ -14,7 +14,8 @@
 
 class Resources{
 public:
-	Resources(unsigned int maxEntities, unsigned int maxParticleSystems, unsigned int maxModels, unsigned int maxShaders);
+	Resources(unsigned int maxEntities, unsigned int maxParticleSystems, 
+		unsigned int maxModels, unsigned int maxShaders, unsigned int maxSkyboxes);
 	// Logic
 	// Get
 	unsigned int entitySize();
@@ -38,6 +39,7 @@ public:
 	Model *getModelData();
 	Model *getModel(unsigned int i);
 	Model *getModel(std::string key);
+	SkyBox *getSkyBox(std::string key);
 	unsigned int getShader(unsigned int i);
 	unsigned int getShader(std::string key);
 
@@ -69,7 +71,7 @@ private:
 	unsigned int *shaders;
 	std::map<std::string, unsigned int> shaderNames;
 	unsigned int nSkyBoxes;
-	SkyBox *skyBox;
+	SkyBox *skyBoxes;
 	std::map<std::string, unsigned int> skyBoxNames;
 
 	Camera camera;

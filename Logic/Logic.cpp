@@ -56,5 +56,9 @@ void Logic::loadCamera(){
 }
 
 void Logic::loadSkyBox() {
-	SkyBox *skybox = resources->
+	SkyBox *skyBoxModel = resources->getSkyBox("Spacebox2");
+	unsigned int skx = resources->addEntity(Entity(skyBoxModel));
+	Entity *skybox = resources->getEntity(skx);
+	skybox->resize(2.0f);
+	skybox->reposition(0.0f, 2.0f, 50.0f);
 }

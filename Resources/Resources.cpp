@@ -12,15 +12,18 @@
 
 // TODO: Error checking for exceeding bounds of containers
 
-Resources::Resources(unsigned int maxEntities, unsigned int maxParticleSystems, unsigned int maxModels, unsigned int maxShaders){
+Resources::Resources(unsigned int maxEntities, unsigned int maxParticleSystems, 
+	unsigned int maxModels, unsigned int maxShaders, unsigned int maxSkyBoxes){
 	nEntities = 0;
 	nParticleSystems = 0;
 	nModels = 0;
 	nShaders = 0;
+	nSkyBoxes = 0;
 	entities = new Entity[maxEntities];
 	particleSystems = new ParticleSystem[maxParticleSystems];
 	models = new Model[maxModels];
 	shaders = new unsigned int[maxShaders];
+	skyBoxes = new SkyBox[maxSkyBoxes];
 	std::cout << "Resources instantiated" << std::endl;
 }
 
@@ -80,6 +83,10 @@ Model *Resources::getModel(std::string key){
 	return models + modelNames[key];
 }
 
+SkyBox* Resources::getSkyBox(std::string key) {
+	return skyBoxes + skyBoxNames[key];
+}
+
 unsigned int Resources::getShader(unsigned int i){
 	return shaders[i];
 }
@@ -125,6 +132,7 @@ unsigned int Resources::addSkyBox(SkyBox skybox, std::string name) {
 	skyBoxNames[name] = nSkyBoxes;
 	return nSkyBoxes++;
 }
+
 
 
 

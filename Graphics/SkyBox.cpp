@@ -23,7 +23,26 @@ static const GLenum types[6] = {
 };
 
 // Default Constructor
+
 SkyBox::SkyBox() {
+
+}
+
+SkyBox::SkyBox(const std::string directory, unsigned int shader) {
+    vector<string> filepaths;
+    filepaths = {"right.png", "left.png",
+                   "top.png", "bottom.png",
+                   "back.png", "front.png"};
+
+    string::const_iterator it = directory.end();
+    it--;
+    string baseDir = (*it == '/') ? directory : directory + "/";
+    for(int i=0; i<filepaths.size(); i++) {
+        filenames[i] = baseDir + filepaths[i];
+    }
+    shaders.push_back(shader);
+    unsigned int newTexID = loadTexture();
+    textures.push_back(newTexID);
     activeTexture = 0;
 	genVao();	
 }
@@ -51,24 +70,6 @@ void SkyBox::render(glm::mat4 projection, glm::mat4 model, glm::mat4 view) {
     glDrawArrays(GL_TRIANGLES, 0, CUBE_NUM_FACES * TRIS_PER_FACE * VALS_PER_VERT);
 }
 
-void SkyBox::loadNewTexture(const string& directory) {
-	
-    vector<string> filepaths;
-    filepaths = {"right.png", "left.png",
-                   "top.png", "bottom.png",
-                   "back.png", "front.png"};
-
-    string::const_iterator it = directory.end();
-	it--;
-	string baseDir = (*it == '/') ? directory : directory + "/";
-	for(int i=0; i<filepaths.size(); i++) {
-		filenames[i] = baseDir + filepaths[i];
-	}
-
-	unsigned int newTexID = loadTexture();
-	textures.push_back(newTexID);
-}
-
 // Take what is stored in the filenames array currently, and load that texture
 // return the texture ID
 unsigned int SkyBox::loadTexture() {
@@ -90,14 +91,6 @@ unsigned int SkyBox::loadTexture() {
     glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
     glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE); 
     return textureID;
-}
-
-void SkyBox::cycleTexture() {
-    cout << "active texture: " << activeTexture << endl;
-    activeTexture++;
-    activeTexture %= textures.size();
-    cout << "active texture: " << activeTexture << endl;
-    cout << textures.at(activeTexture) << endl;
 }
 
 // Generate the cube vao for the skybox texture
