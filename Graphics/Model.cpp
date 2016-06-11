@@ -47,7 +47,7 @@ Model::Model(std::string path, unsigned int shader){
 		shaders.push_back(shader);
 	}
 	genVaos();
-	genTextures();
+	genTextures(objDir);
 }
 
 void Model::genVaos(){
@@ -98,17 +98,19 @@ void Model::loadVao(unsigned int i){
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, mesh.indices.size() * sizeof(unsigned int), &mesh.indices[0], GL_STATIC_DRAW);
 }
 
-void Model::genTextures(){
+void Model::genTextures(std::string directory){
 	textures.resize(materials.size());
 	glGenTextures(materials.size(), textures.data());
 
 	// Load each texture
-	glActiveTexture(GL_TEXTURE0);
+	// glActiveTexture(GL_TEXTURE0);
 	for( int i=0; i<materials.size(); i++ ){
 		glBindTexture(GL_TEXTURE_2D, textures[i]);
 		std::string texname = materials[i].diffuse_texname;
 		if( !texname.empty() ){
-			loadTexture(texname);
+			std::cout << "Texname " << directory + texname << std::endl;
+			// loadDefaultTexture();
+			loadTexture(directory + texname);
 		}else{
 			loadDefaultTexture();
 		}
@@ -140,7 +142,7 @@ void Model::renderShape(unsigned int i, glm::mat4 projection, glm::mat4 model, g
 	unsigned int PID = shaders[i];
 	glUseProgram(PID);
 
-	glm::mat4 modelview = model * view;
+	glm::mat4 modelview = view * model;
 	// Load transformation matrices
 	GLint viewHandle = glGetUniformLocation(PID, "view_matrix");
 	glUniformMatrix4fv(viewHandle, 1, GL_FALSE, glm::value_ptr(view));

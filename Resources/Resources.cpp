@@ -84,6 +84,7 @@ Model *Resources::getModel(std::string key){
 }
 
 SkyBox* Resources::getSkyBox(std::string key) {
+	std::cout << "SB " << skyBoxNames[key] << std::endl;
 	return skyBoxes + skyBoxNames[key];
 }
 
@@ -128,6 +129,7 @@ unsigned int Resources::addShader(unsigned int shader, std::string name){
 }
 
 unsigned int Resources::addSkyBox(SkyBox skybox, std::string name) {
+	std::cout << name << std::endl;
 	skyBoxes[nSkyBoxes] = skybox;
 	skyBoxNames[name] = nSkyBoxes;
 	return nSkyBoxes++;

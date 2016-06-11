@@ -19,7 +19,7 @@ void Logic::update(){
 }
 
 void Logic::updateInputEvents(){
-	glfwPollEvents();
+	glfwWaitEvents();
 }
 
 void Logic::updateGameState(){
@@ -48,30 +48,38 @@ void Logic::key_callback(GLFWwindow *window, int key, int scancode, int action, 
 
 void Logic::click_callback(GLFWwindow *window, int button, int action, int mods){
 	Logic *logic = static_cast<Logic *>(glfwGetWindowUserPointer(window));
-	// if( button == GLFW_MOUSE_BUTTON_LEFT && !rightMouseDown){
+	if( button == GLFW_MOUSE_BUTTON_LEFT){
+		if( action == GLFW_PRESS ){
+			glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+			glfwGetCursorPos(window, &(logic->xprev), &logic->yprev);
+			logic->leftMouseDown = true;
+		}else if( action == GLFW_RELEASE ){
+			glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+			logic->leftMouseDown = false;
+		}
+	}
+	// else if( button == GLFW_MOUSE_BUTTON_RIGHT && !logic->leftMouseDown ){
 	// 	if( action == GLFW_PRESS ){
 	// 		glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
-	// 		glfwGetCursorPos(window, &xprev, &yprev);
-	// 		leftMouseDown = true;
+	// 		glfwGetCursorPos(window, &logic->xprev, &logic->yprev);
+	// 		logic->rightMouseDown = true;
 	// 	}else if( action == GLFW_RELEASE ){
 	// 		glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
-	// 		leftMouseDown = false;
-	// 	}
-	// }else if( button == GLFW_MOUSE_BUTTON_RIGHT && !leftMouseDown ){
-	// 	if( action == GLFW_PRESS ){
-	// 		glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
-	// 		glfwGetCursorPos(window, &xprev, &yprev);
-	// 		rightMouseDown = true;
-	// 	}else if( action == GLFW_RELEASE ){
-	// 		glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
-	// 		rightMouseDown = false;
+	// 		logic->rightMouseDown = false;
 	// 	}
 	// }
 }
 
 void Logic::cursor_position_callback(GLFWwindow *window, double xpos, double ypos){
 	Logic *logic = static_cast<Logic *>(glfwGetWindowUserPointer(window));
-	
+	if( logic->leftMouseDown ){
+		glm::vec2 windowSize = logic->camera->getWindowSize();
+		double deltaX = logic->xprev - xpos;
+		double deltaY = ypos - logic->yprev;
+		logic->camera->orbit(2 * M_PI * deltaY/windowSize.y, 2 * M_PI * deltaX/windowSize.x);
+		logic->xprev = xpos;
+		logic->yprev = ypos;
+	}
 }
 
 void Logic::window_resize_callback(GLFWwindow *window, int x, int y){
@@ -89,16 +97,22 @@ void Logic::loadInitialGameState(){
 }
 	
 void Logic::loadCharacter(){
-	// Model *model = resources->getModel("Wavecraft2");
-	// character = resources->addEntity(Entity(model));
-	// model = resources->getModel("star");
+	Model *model = resources->getModel("Wavecraft2");
+	character = resources->addEntity(Entity(model));
+	// Model *model = resources->getModel("star");
 	// unsigned int star = resources->addEntity(Entity(model));
+	// std::cout << "star " << star << std::endl;
+	// std::cout << "char " << character << std::endl;
+	Entity *ent = resources->getEntity(character);
+	// ent->rescale(2.0f, 2.0f, 2.0f);
+	// ent->reposition(0.0f, 1.0f, 0.0f);
+	// ent->reorient(glm::vec3(1.0f, 0.0f, 0.0f));
 
 }
 
 void Logic::loadCamera(){
 	camera = resources->getCamera();
-	camera->reposition(glm::vec3(0.0f, 2.0f, 50.0f));
+	camera->reposition(glm::vec3(0.0f, 2.0f, 10.0f));
 	camera->lookAt(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
 }
 
@@ -106,8 +120,8 @@ void Logic::loadSkyBox() {
 	SkyBox *skyBoxModel = resources->getSkyBox("Spacebox5");
 	unsigned int skx = resources->addEntity(Entity(skyBoxModel));
 	Entity *skybox = resources->getEntity(skx);
-	skybox->resize(2.0f);
-	skybox->reposition(0.0f, 2.0f, 50.0f);
+	skybox->resize(20.0f);
+	skybox->reposition(0.0f, 2.0f, 10.0f);
 }
 
 

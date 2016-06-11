@@ -26,7 +26,10 @@ private:
 	void loadSkyBox();
 	Resources *resources;
 
+	// Camera stuff
 	Camera *camera;
+	double xprev, yprev;
+	bool leftMouseDown;
 	
 	GLFWwindow *window;
 

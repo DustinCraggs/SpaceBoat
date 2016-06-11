@@ -9,6 +9,7 @@ public:
 	void setWindowSize(int x, int y);
 
 	// Get properties
+	glm::vec2 getWindowSize();
 	glm::vec3 getTarget();
 	glm::vec3 getPosition();
 	glm::vec3 getMoveDirection();
@@ -32,6 +33,7 @@ public:
 	void zoom(float amount);
 	void move(glm::vec3 movement);
 private:
+	int xWindowSize, yWindowSize;
 	bool orientationFixed;
 	bool eyeChanged;
 	bool projectionChanged;

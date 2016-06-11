@@ -25,7 +25,7 @@ private:
 	// Generation methods
 	void genVaos();
 	void loadVao(unsigned int i);
-	void genTextures();
+	void genTextures(std::string directory);
 	void loadTexture(std::string path);
 	void loadDefaultTexture();
 };

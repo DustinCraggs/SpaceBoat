@@ -52,11 +52,11 @@ void SkyBox::render(glm::mat4 projection, glm::mat4 model, glm::mat4 view) {
     unsigned int PID = shaders.at(0);
     glUseProgram(PID);
 
-    glm::mat4 modelview = model * view;
+    glm::mat4 modelview = view * model;
 
     // Load transformation matrices
-    GLint viewHandle = glGetUniformLocation(PID, "view_matrix");
-    glUniformMatrix4fv(viewHandle, 1, GL_FALSE, glm::value_ptr(view));
+    // GLint viewHandle = glGetUniformLocation(PID, "view_matrix");
+    // glUniformMatrix4fv(viewHandle, 1, GL_FALSE, glm::value_ptr(view));
 
     GLint modelViewHandle = glGetUniformLocation(PID, "modelview_matrix");
     glUniformMatrix4fv(modelViewHandle, 1, GL_FALSE, glm::value_ptr(modelview));
@@ -74,18 +74,20 @@ void SkyBox::render(glm::mat4 projection, glm::mat4 model, glm::mat4 view) {
 // return the texture ID
 unsigned int SkyBox::loadTexture() {
 	unsigned int textureID;
-	glGenTextures(1, &textureID);
+    glActiveTexture(GL_TEXTURE0);
+    glGenTextures(1, &textureID);
 	glBindTexture(GL_TEXTURE_CUBE_MAP, textureID);
 	int x, y, n;
 	unsigned char* data;
 	for(int i=0; i<CUBE_NUM_FACES; i++) {
-		data = stbi_load(filenames[i].c_str(), &x, &y, &n, 3);
+        std::cout << "loading file " <<  filenames[i] << std::endl;
+		data = stbi_load(filenames[i].c_str(), &x, &y, &n, STBI_rgb);
 		glTexImage2D(types[i], 0, GL_RGB, x, y, 0, GL_RGB, GL_UNSIGNED_BYTE, 
 			data);
 		stbi_image_free(data);
-	}
+    }
 
-	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
     glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);

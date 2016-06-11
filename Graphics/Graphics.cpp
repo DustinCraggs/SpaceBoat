@@ -48,7 +48,8 @@ void Graphics::loadModels(std::string directory){
 	}
 	tinydir_close(&dir);
 
-	unsigned int shader = resources->getShader("debug_normal");
+	// unsigned int shader = resources->getShader("debug_normal");
+	unsigned int shader = resources->getShader("texture");
 	for( int i=0; i<files.size(); i++ ){
 		std::string fileName(files[i]);
 		std::cout << "Adding model " << fileName << std::endl;
@@ -76,7 +77,7 @@ void Graphics::loadSkyBoxes(std::string directory) {
 	for(int i=0; i<directories.size(); i++) {
 		std::string fileName(directories.at(i));
 		std::cout << "Adding skybox " << fileName << std::endl;
-		resources->addSkyBox(SkyBox(directory+directories[i], shader), fileName.substr(0, directories[i].size()-4));
+		resources->addSkyBox(SkyBox(directory+directories[i], shader), fileName);
 	}
 }
 
@@ -171,7 +172,7 @@ void Graphics::renderFrame(){
 
 	glFlush();
 	glfwSwapBuffers(window);
-	glfwPollEvents();
+	// glfwPollEvents();
 }
 
 void Graphics::renderEntities(glm::mat4 projection, glm::mat4 view){
