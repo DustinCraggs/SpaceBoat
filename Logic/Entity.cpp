@@ -38,6 +38,7 @@ void Entity::updateTransformation(){
 // Rendering
 void Entity::render(glm::mat4 projection, glm::mat4 view){
 	updateTransformation();
+	cout << glm::to_string(transformation) << endl;
 	geometry->render(projection, transformation, view);
 }
 

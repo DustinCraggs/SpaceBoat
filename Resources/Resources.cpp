@@ -79,11 +79,12 @@ Model *Resources::getModel(unsigned int i){
 }
 
 Model *Resources::getModel(std::string key){
-	// std::cout << "Model " << modelNames[key] << std::endl;
 	return models + modelNames[key];
 }
 
 SkyBox* Resources::getSkyBox(std::string key) {
+	std::cout << "Map " << modelNames["Spacebox2"] << std::endl;
+	std::cout << "Map " << modelNames["Spacebox5"] << std::endl;
 	return skyBoxes + skyBoxNames[key];
 }
 

@@ -30,6 +30,7 @@ public:
 	void retarget(glm::vec3 target);
 	void orbit(float radAboutX, float radAboutY);
 	void zoom(float amount);
+	void rotate(float xRot, float yRot);
 	void move(glm::vec3 movement);
 private:
 	bool orientationFixed;

@@ -37,11 +37,26 @@ void Logic::registerCallbacks(){
 void Logic::key_callback(GLFWwindow *window, int key, int scancode, int action, int mods){
 	Logic *logic = static_cast<Logic *>(glfwGetWindowUserPointer(window));
 	if( action == GLFW_PRESS || action == GLFW_REPEAT ){
-		switch( key ){
-			case GLFW_KEY_Z:
-				// Zoom
-			break;
-		}
+		// switch( key ){
+		// 	case GLFW_KEY_Z:
+		// 		// Zoom
+		// 	break;
+		// 	case GLFW_KEY_LEFT:
+	 //            logic->camera->
+	 //            break;
+	 //        case GLFW_KEY_RIGHT:
+	 //            yRot += 0.1;
+	 //            break;
+	 //        case GLFW_KEY_UP:
+	 //            xRot += 0.1;
+	 //            break;
+	 //        case GLFW_KEY_DOWN:
+	 //            xRot -= 0.1;
+	 //            break;
+
+		//}
+
+
 		// camera.move(0.1f * direction);
 	}
 }
@@ -98,16 +113,16 @@ void Logic::loadCharacter(){
 
 void Logic::loadCamera(){
 	camera = resources->getCamera();
-	camera->reposition(glm::vec3(0.0f, 2.0f, 50.0f));
-	camera->lookAt(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+	//camera->reposition(glm::vec3(0.0f, 2.0f, 50.0f));
+	//camera->lookAt(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
 }
 
 void Logic::loadSkyBox() {
-	SkyBox *skyBoxModel = resources->getSkyBox("Spacebox5");
+	SkyBox *skyBoxModel = resources->getSkyBox("Spacebox2");
 	unsigned int skx = resources->addEntity(Entity(skyBoxModel));
 	Entity *skybox = resources->getEntity(skx);
-	skybox->resize(2.0f);
-	skybox->reposition(0.0f, 2.0f, 50.0f);
+	skybox->resize(0.5f);
+	// skybox->reposition(0.0f, 2.0f, 50.0f);
 }
 
 

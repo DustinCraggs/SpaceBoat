@@ -76,7 +76,7 @@ void Graphics::loadSkyBoxes(std::string directory) {
 	for(int i=0; i<directories.size(); i++) {
 		std::string fileName(directories.at(i));
 		std::cout << "Adding skybox " << fileName << std::endl;
-		resources->addSkyBox(SkyBox(directory+directories[i], shader), fileName.substr(0, directories[i].size()-4));
+		resources->addSkyBox(SkyBox(directory+directories[i], shader), fileName);
 	}
 }
 

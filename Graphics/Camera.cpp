@@ -153,7 +153,7 @@ void Camera::orbit(float radAboutX, float radAboutY){
 	// Make target effective origin
 	position -= target;
 	xrot += radAboutX;
-	yrot += radAboutX;
+	yrot += radAboutY;
 	// rotate position by xrad, yrad in camera coords
 	glm::vec3 viewX = glm::vec3(glm::row(view, 0));
 	position = glm::rotate(position, -radAboutX, viewX);
@@ -171,5 +171,9 @@ void Camera::zoom(float amount){
 		position += amount * glm::normalize(direction);
 		eyeChanged = true;
 	}
+}
+
+void Camera::rotate(float xRotation, float yRotation) {
+
 }
 
