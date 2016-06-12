@@ -11,7 +11,7 @@ physics 	= Physics.cpp ParticleSystem.cpp
 libs		= tiny_obj_loader.cc Shader.cpp
 
 # Debug mode
-debug = true
+debug = false
 
 control_files 	= $(addprefix Control/, $(control))
 logic_files 	= $(addprefix Logic/, $(logic))
@@ -35,9 +35,9 @@ endif
 endthing = `pkg-config --static --libs glfw3`
 
 all:
-	g++ $(I_flags) $(flags) $(src_files) -o solarSurfer driver.cpp $(endthing)
+	g++ $(I_flags) $(flags) $(src_files) -o SpaceBoat driver.cpp $(endthing)
 
 clean:
-	rm *.o solarSurfer
+	rm *.o SpaceBoat
 
 # $(info $(src))
