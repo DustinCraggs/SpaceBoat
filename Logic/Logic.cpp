@@ -97,7 +97,6 @@ void Logic::loadInitialGameState(){
 	loadCamera();
 	loadCharacter();
 	loadSkyBox();
-	std::cout << "BUTTSBURG" << std::endl;
 	loadTrack();
 	std::cout << "All game entities loaded" << std::endl;
 	glfwSetWindowUserPointer(window, this);
@@ -116,19 +115,12 @@ void Logic::loadCharacter(){
 	character = resources->addEntity(Entity(model));
 	Entity *ent = resources->getEntity(character);
 	ent->resize(0.05f);
-	ent->reposition(0.0f, 1.0f, -2.0f);
+	ent->reposition(0.0f, 0.1f, 1.0f);
 	//ent->reorient(glm::vec3(0.0f, 0.0f, 1.0f));
 
 	Entity* estar = resources->getEntity(star);
 	estar->resize(0.1f);
 	estar->reposition(-1.0f, 0.0f, 10.0f);
-
-	// Asteroid
-	Model *mAsteroid = resources->getModel("asteroid");
-	unsigned int asteroid = resources->addEntity(Entity(mAsteroid));
-	Entity *eAsteroid = resources->getEntity(asteroid);
-	eAsteroid->resize(0.5f);
-	eAsteroid->reposition(-10.0f, 0.0f, 0.0f);
 
 }
 
@@ -146,14 +138,27 @@ void Logic::loadSkyBox() {
 }
 
 void Logic::loadTrack() {
-	std::cout << "BUTTS" << std::endl;
 	std::cout << "loading track" << std::endl;
 	Plane *mtrack = resources->getPlane("track");
 	track = resources->addEntity(Entity(mtrack));
 	Entity* eTrack = resources->getEntity(track);
-	std::cout << "zfar plane: " << resources->getZFarPlane() << std::endl;
-	eTrack->stretch(1.0f, 0.0f, 100.0f);
+	eTrack->stretch(1.0f, 0.0f, resources->getZFarPlane());
 }
 
+
+// void Logic::loadRandomAsteroids() {
+
+// 	for(int i=0; i<NUMBER_OF_ASTEROIDS; i++) {
+// 		Model* mAsteroid = resources->getModel("asteroid");
+// 		unsigned int asteroid = resources->addEntity(Entity(mAsteroid));
+// 		Entity *eAsteroid = resources->getEntity(asteroid);
+// 		randomizeAsteroidData(eAsteroid)
+// 	}
+
+// }
+
+// void randomizeAsteroidData(Entity* asteroid) {
+
+// }
 
 
