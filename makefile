@@ -2,7 +2,6 @@
 dirs = Control Graphics Logic Physics Resources Libs
 
 # Source files to compile
-<<<<<<< HEAD
 # Add source files here
 control		= Control.cpp
 logic		= Logic.cpp Entity.cpp
