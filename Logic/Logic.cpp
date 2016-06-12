@@ -14,7 +14,7 @@
 // #include <irrKlang.h>
 
 
-#define NUMBER_OF_ASTEROIDS 100
+#define NUMBER_OF_ASTEROIDS 10
 #define TEST true
 
 Logic::Logic(Resources *resources){
@@ -25,14 +25,15 @@ Logic::Logic(Resources *resources){
 }
 
 void Logic::update(){
-	// TODO: update dt
+	// std::chrono::system_clock::time_point t1 = std::chrono::system_clock::now();
+	// delta = std::chrono::duration_cast<std::chrono::nanoseconds>(t1 - t0).count()/pow(10,9);
 	
 	updateInputEvents();
 	updateGameState();
 }
 
 void Logic::updateInputEvents(){
-	glfwWaitEvents();
+	glfwPollEvents();
 }
 
 void Logic::updateGameState(){
@@ -104,19 +105,16 @@ void Logic::window_resize_callback(GLFWwindow *window, int x, int y){
 
 
 void Logic::loadInitialGameState(){
-	std::cout << "loading initial game state" << std::endl;
 	loadCamera();
 	loadCharacter();
 	loadSkyBox();
 	loadTrack();
 	loadRandomAsteroids();
-	std::cout << "All game entities loaded" << std::endl;
 	glfwSetWindowUserPointer(window, this);
 	registerCallbacks();
 }
 
 void Logic::loadCharacter(){
-	std::cout << "Loading character" << std::endl;
 	unsigned int starShader = resources->getShader("debug_normal");
 	Model *model1 = resources->getModel("star");
 	model1->changeShader(starShader);
@@ -127,7 +125,7 @@ void Logic::loadCharacter(){
 	character = resources->addEntity(Entity(model));
 	Entity *ent = resources->getEntity(character);
 	ent->resize(0.05f);
-	ent->reposition(0.0f, 0.1f, 1.0f);
+	ent->reposition(0.0f, 0.1f, 0.0f);
 	//ent->reorient(glm::vec3(0.0f, 0.0f, 1.0f));
 
 	Entity* estar = resources->getEntity(star);
@@ -137,8 +135,10 @@ void Logic::loadCharacter(){
 
 void Logic::loadCamera(){
 	camera = resources->getCamera();
-	camera->reposition(glm::vec3(0.0f, 0.0f, -20.0f));
-	camera->lookAt(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+	camera->reposition(glm::vec3(0.0f, 0.1f, -2.0f));
+	camera->fixedLookAt(glm::vec3(0.0f, 0.1f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+	// BUG: below line causes a seg fault for some reason
+	// camera->move(resources->getEntity(character)->getPosition());
 }
 
 void Logic::loadSkyBox() {

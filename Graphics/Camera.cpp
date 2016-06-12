@@ -191,8 +191,8 @@ void Camera::restrictedOrbit(float radAboutX, float radAboutY){
 	// Difference between current rotation and Pi/2
 	double diff = M_PI_2 - std::abs(xrot);
 	double newXAngle = xrot - radAboutX;
-	if( newXAngle >= M_PI_2 ){
-		radAboutX = -diff + 0.00001;
+	if( newXAngle >= M_PI_2 - 0.1 ){
+		radAboutX = -diff + 0.1;
 		// radAboutX = 0;
 	}else if( newXAngle <= 0 ){
 		radAboutX = xrot;
