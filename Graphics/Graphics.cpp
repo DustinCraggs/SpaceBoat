@@ -40,7 +40,6 @@ void Graphics::loadModels(std::string directory){
 		tinydir_file file;
 		tinydir_readfile(&dir, &file);
 		if( !file.is_dir && strcmp(file.extension, "obj") == 0 ){
-			std::cout << "Found model " << file.name << std::endl;
 			files.push_back(file.name);
 		}
 		tinydir_next(&dir);
@@ -66,7 +65,6 @@ void Graphics::loadSkyBoxes(std::string directory) {
 		tinydir_file file;
 		tinydir_readfile(&dir, &file);
 		if(file.is_dir && file.name[0] != '.') {
-			std::cout << "Found directory: " << file.name << std::endl;
 			directories.push_back(file.name);
 		}
 		tinydir_next(&dir);
@@ -90,7 +88,6 @@ void Graphics::loadShaders(std::string directory){
 		tinydir_file file;
 		tinydir_readfile(&dir, &file);
 		if( !file.is_dir && strcmp(file.extension, "vert") == 0 ){
-			std::cout << "Found shader " << file.name << std::endl;
 			files.push_back(file.name);
 		}
 		tinydir_next(&dir);
@@ -106,7 +103,7 @@ void Graphics::loadShaders(std::string directory){
 }
 
 void Graphics::loadPlane() {
-	std::cout << "Creating ground/track plane" << std::endl;
+	// std::cout << "Creating ground/track plane" << std::endl;
 	unsigned int trackShader = resources->getShader("track");
 	resources->addPlane(Plane(trackShader), "track");
 }

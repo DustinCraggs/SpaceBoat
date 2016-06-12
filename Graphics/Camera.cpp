@@ -3,6 +3,8 @@
 #include <glm/gtc/matrix_access.hpp>
 
 #include <iostream>
+#include <algorithm>
+#include <glm/gtx/vector_angle.hpp>
 
 #include "Camera.hpp"
 
@@ -177,6 +179,44 @@ void Camera::orbit(float radAboutX, float radAboutY){
 
 	// Reset position of target
 	position += target;
+	lookAt(target, up);
+}
+
+// Rotates camera around target, and then points camera back at target
+void Camera::restrictedOrbit(float radAboutX, float radAboutY){
+	// Difference between current rotation and Pi/2
+	double diff = M_PI_2 - std::abs(xrot);
+	double newXAngle = xrot - radAboutX;
+	if( newXAngle >= M_PI_2 ){
+		radAboutX = -diff + 0.00001;
+		// radAboutX = 0;
+	}else if( newXAngle <= 0 ){
+		radAboutX = xrot;
+		// radAboutX = 0;
+	}
+	// Get position of target relative to camera
+	glm::vec3 tarToCam = position - target;
+	// Get x-axis of camera in world coordinates
+	glm::vec3 viewX = glm::vec3(glm::row(view, 0));
+	// Rotate around target
+	tarToCam = glm::rotate(tarToCam, radAboutX, viewX);
+	tarToCam = glm::rotate(tarToCam, radAboutY, up);
+
+	xrot -= radAboutX;
+	yrot += radAboutY;
+	
+	// Place camera at new position
+	position = tarToCam + target;
+	lookAt(target, up);
+}
+
+void Camera::resetYOrbit(){
+	// glm::vec3 viewX = glm::normalize(glm::vec3(glm::row(view, 0)));
+	// double currentAngle = glm::angle(viewX, glm::vec3(1.0f, 0.0f, 0.0f));
+	glm::vec3 tarToCam = position - target;
+	tarToCam = glm::rotate(tarToCam, -yrot, up);
+	yrot = 0;
+	position = tarToCam + target;
 	lookAt(target, up);
 }
 

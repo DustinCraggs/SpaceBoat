@@ -14,10 +14,13 @@
 Logic::Logic(Resources *resources){
 	this->resources = resources;
 	window = resources->getWindow();
-	std::cout << "Logic instantiated" << std::endl;
+	leftMouseDown = false;
+	cameraLocked = true;
 }
 
 void Logic::update(){
+	// TODO: update dt
+	
 	updateInputEvents();
 	updateGameState();
 }
@@ -44,24 +47,13 @@ void Logic::key_callback(GLFWwindow *window, int key, int scancode, int action, 
     glm::vec3 orientation = craft->getOrientation();
 	if( action == GLFW_PRESS || action == GLFW_REPEAT ){
 		switch( key ){
-			// case GLFW_KEY_Z:
-			// 	// Zoom
-			// 	break;
-			// case GLFW_KEY_UP:
-	  //          	//craft->move(0.1f * orientation);
-	  //           break;
-	  //       case GLFW_KEY_RIGHT:
-	  //           craft->rotate(0.1f * glm::vec3(0.0f, 1.0f, 0.0f));
-	  //           logic->camera->rotate(0.1f * glm::vec3(0.0f, 1.0f, 0.0f));
-	  //           break;
-	  //       case GLFW_KEY_LEFT:
-	  //          	craft->rotate(-0.1f * glm::vec3(0.0f, 1.0f, 0.0f));
-	  //          	logic->camera->rotate(0.1f * glm::vec3(0.0f, 1.0f, 0.0f));
-	  //           break;
+			case GLFW_KEY_L:
+				if( !logic->cameraLocked ){
+					logic->camera->resetYOrbit();
+				}
+				logic->cameraLocked = !logic->cameraLocked;
+			break;
 		}
-
-
-		//camera.move(0.1f * direction);
 	}
 }
 
@@ -83,9 +75,14 @@ void Logic::cursor_position_callback(GLFWwindow *window, double xpos, double ypo
 	Logic *logic = static_cast<Logic *>(glfwGetWindowUserPointer(window));
 	if( logic->leftMouseDown ){
 		glm::vec2 windowSize = logic->camera->getWindowSize();
-		double deltaX = logic->xprev - xpos;
-		double deltaY = ypos - logic->yprev;
-		logic->camera->orbit(2 * M_PI * deltaY/windowSize.y, 2 * M_PI * deltaX/windowSize.x);
+		double deltaX = 0;
+		double deltaY = -(ypos - logic->yprev);
+		if( logic->cameraLocked ){
+			// double deltaY = 0;
+		}else{
+			deltaX = logic->xprev - xpos;
+		}
+		logic->camera->restrictedOrbit(2 * M_PI * deltaY/windowSize.y, 2 * M_PI * deltaX/windowSize.x);
 		logic->xprev = xpos;
 		logic->yprev = ypos;
 	}
@@ -107,7 +104,7 @@ void Logic::loadInitialGameState(){
 	glfwSetWindowUserPointer(window, this);
 	registerCallbacks();
 }
-	
+
 void Logic::loadCharacter(){
 
 	// model = resources->getModel("star");
@@ -134,22 +131,17 @@ void Logic::loadCharacter(){
 	Entity* estar = resources->getEntity(star);
 	estar->resize(0.1f);
 	estar->reposition(-1.0f, 0.0f, 10.0f);
-
 }
 
 void Logic::loadCamera(){
 	camera = resources->getCamera();
-	camera->reposition(glm::vec3(0.0f, 2.0f, 10.0f));
+	camera->reposition(glm::vec3(0.0f, 0.0f, -20.0f));
 	camera->lookAt(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
 }
 
 void Logic::loadSkyBox() {
 	SkyBox *skyBoxModel = resources->getSkyBox("Spacebox5");
 	Entity *skybox = resources->setCurrentSkybox(Entity(skyBoxModel));
-}
-
-void Logic::loadTrack(){
-
 }
 
 void Logic::loadTrack() {

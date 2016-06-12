@@ -5,7 +5,7 @@ dirs = Control Graphics Logic Physics Resources Libs
 # Add source files here
 control		= Control.cpp
 logic		= Logic.cpp Entity.cpp
-graphics 	= Graphics.cpp Model.cpp Camera.cpp Geometry.cpp ParticleRenderer.cpp Skybox.cpp CubeMapTexture.cpp
+graphics 	= Graphics.cpp Model.cpp Camera.cpp Geometry.cpp ParticleRenderer.cpp Skybox.cpp CubeMapTexture.cpp Plane.cpp
 resources 	= Resources.cpp
 physics 	= Physics.cpp ParticleSystem.cpp
 libs		= tiny_obj_loader.cc Shader.cpp

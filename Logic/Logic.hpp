@@ -29,6 +29,7 @@ private:
 	// Camera stuff
 	Camera *camera;
 	double xprev, yprev;
+	bool cameraLocked;
 	bool leftMouseDown;
 	
 	GLFWwindow *window;

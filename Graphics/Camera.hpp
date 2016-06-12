@@ -10,6 +10,7 @@ public:
 
 	// Get properties
 	glm::vec2 getWindowSize();
+
 	glm::vec3 getTarget();
 	glm::vec3 getPosition();
 	glm::vec3 getMoveDirection();
@@ -31,6 +32,8 @@ public:
 	void reposition(glm::vec3 position);
 	void retarget(glm::vec3 target);
 	void orbit(float radAboutX, float radAboutY);
+	void restrictedOrbit(float radAboutX, float radAboutY);
+	void resetYOrbit();
 	void zoom(float amount);
 	void rotate(float radians, glm::vec3 axis);
 	void rotate(glm::vec3 rotation);
