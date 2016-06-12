@@ -91,6 +91,10 @@ glm::mat4 Camera::getOrientationMatrix(){
 	return orientationMat;
 }
 
+float Camera::getFarClippingPlane() {
+	return far;
+}
+
 // Updating matrices
 
 inline void Camera::updateCameraMatrix(){

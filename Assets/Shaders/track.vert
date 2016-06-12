@@ -13,6 +13,5 @@ out vec3 normal; // the eye space normal
 
 void main(void){
 	normal = normalize(normal_in);
-	
 	gl_Position = projection_matrix * modelview_matrix * vec4(vertex_in, 1.0);
 }

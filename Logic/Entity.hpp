@@ -39,6 +39,9 @@ public:
 	glm::vec3 getPosition();
 	glm::vec3 getOrientation();
 	glm::vec3 getScale();
+
+	bool renderable; 
+
 private:
 
 	glm::vec3 position;

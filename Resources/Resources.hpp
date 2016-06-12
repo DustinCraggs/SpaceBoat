@@ -52,6 +52,7 @@ public:
 	Plane *getPlane(std::string key);
 	unsigned int getShader(unsigned int i);
 	unsigned int getShader(std::string key);
+	float getZFarPlane();
 
 	Camera *getCamera();
 	GLFWwindow *getWindow();
@@ -92,6 +93,7 @@ private:
 	unsigned int nSkyBoxes;
 	SkyBox *skyBoxes;
 	std::map<std::string, unsigned int> skyBoxNames;
+
 	unsigned int nPlanes;
 	Plane *planes;
 	std::map<std::string, unsigned int> planeNames;

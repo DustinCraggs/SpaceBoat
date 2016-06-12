@@ -25,6 +25,8 @@ Entity::Entity(Geometry *geometry){
 
 	// Tranformation matrix
 	transformation = glm::mat4(1.0f);
+
+	renderable = true;
 }
 
 void Entity::updateTransformation(){

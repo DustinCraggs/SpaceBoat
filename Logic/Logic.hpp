@@ -24,6 +24,8 @@ private:
 	void loadCamera();
 	void loadTrack();
 	void loadSkyBox();
+	void randomizeAsteroidData(Entity* asteroid);
+	void loadRandomAsteroids();
 	Resources *resources;
 
 	// Camera stuff
@@ -44,6 +46,8 @@ private:
 	// Keeping track of entities
 	unsigned int character;
 	unsigned int track;
+	unsigned seed;
+	std::vector<unsigned int> asteroids;
 };
 
 #endif

@@ -70,6 +70,10 @@ Entity *Resources::getTransparentEntity(unsigned int i){
 	return transparentEntities + i;
 }
 
+float Resources::getZFarPlane() {
+	return camera.getFarClippingPlane();
+}
+
 // Set
 
 Entity *Resources::setCurrentSkybox(Entity skybox){

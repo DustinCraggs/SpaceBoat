@@ -7,8 +7,14 @@
 #include <glm/glm.hpp>
 #include <glm/ext.hpp>
 #include <GLFW/glfw3.h>
+
+#include <chrono>
+#include <random>
+
 // #include <irrKlang.h>
 
+
+#define NUMBER_OF_ASTEROIDS 100
 #define TEST true
 
 Logic::Logic(Resources *resources){
@@ -53,6 +59,9 @@ void Logic::key_callback(GLFWwindow *window, int key, int scancode, int action, 
 				}
 				logic->cameraLocked = !logic->cameraLocked;
 			break;
+			case GLFW_KEY_UP:
+	           	// logic->camera->move(glm::vec3(0.0f, 0.0f, 1.0f));
+            break;
 		}
 	}
 }
@@ -100,21 +109,14 @@ void Logic::loadInitialGameState(){
 	loadCharacter();
 	loadSkyBox();
 	loadTrack();
+	loadRandomAsteroids();
 	std::cout << "All game entities loaded" << std::endl;
 	glfwSetWindowUserPointer(window, this);
 	registerCallbacks();
 }
 
 void Logic::loadCharacter(){
-
-	// model = resources->getModel("star");
-	// unsigned int star = resources->addEntity(Entity(model));
-	// Entity *ent1 = resources->getEntity(character);
-	// Entity *ent2 = resources->getEntity(star);
-	// ent2->rescale(0.2f, 0.2f, 0.2f);
-	// ent->reposition(0.0f, 1.0f, 0.0f);
-	// ent->reorient(glm::vec3(1.0f, 0.0f, 0.0f));
-
+	std::cout << "Loading character" << std::endl;
 	unsigned int starShader = resources->getShader("debug_normal");
 	Model *model1 = resources->getModel("star");
 	model1->changeShader(starShader);
@@ -124,8 +126,8 @@ void Logic::loadCharacter(){
 	Model *model = resources->getModel("Wavecraft2");
 	character = resources->addEntity(Entity(model));
 	Entity *ent = resources->getEntity(character);
-	ent->rescale(2.0f, 2.0f, 2.0f);
-	ent->reposition(0.0f, 1.0f, 0.0f);
+	ent->resize(0.05f);
+	ent->reposition(0.0f, 0.1f, 1.0f);
 	//ent->reorient(glm::vec3(0.0f, 0.0f, 1.0f));
 
 	Entity* estar = resources->getEntity(star);
@@ -140,18 +142,46 @@ void Logic::loadCamera(){
 }
 
 void Logic::loadSkyBox() {
-	SkyBox *skyBoxModel = resources->getSkyBox("Spacebox5");
+	SkyBox *skyBoxModel = resources->getSkyBox("Spacebox2");
 	Entity *skybox = resources->setCurrentSkybox(Entity(skyBoxModel));
 }
 
 void Logic::loadTrack() {
-	std::cout << "loading track" << std::endl;
 	Plane *mtrack = resources->getPlane("track");
-	track = resources->addEntity(Entity(mtrack));
-	Entity* eTrack = resources->getEntity(track); 
-	eTrack->resize(100.0f);
-	eTrack->reposition(0.0f, -10.0f, 0.0f);
+	track = resources->addTransparentEntity(Entity(mtrack));
+	Entity* eTrack = resources->getTransparentEntity(track);
+	eTrack->stretch(1.0f, 0.0f, resources->getZFarPlane());
 }
 
+void Logic::randomizeAsteroidData(Entity* asteroid) {
+	seed = std::chrono::system_clock::now().time_since_epoch().count();
+	float zFarPlane = resources->getZFarPlane();
+  	std::default_random_engine generator(seed);
+
+  	// asteroid vertices are huge
+  	std::uniform_real_distribution<float> distribution(0.01f, 0.2f);
+  	asteroid->resize(distribution(generator));
+  	std::uniform_real_distribution<float> distribution2(-10.0f, 10.0f);
+  	asteroid->reorient(distribution2(generator),distribution2(generator),
+  		distribution2(generator));
+
+  	// positions between -zfar and +zfar
+  	std::uniform_real_distribution<float> zFarDist(-zFarPlane, zFarPlane);
+  	asteroid->reposition(glm::vec3(distribution2(generator), distribution2(generator), 
+  		zFarDist(generator)));
+}
+
+
+void Logic::loadRandomAsteroids() {
+	std::cout << "creating " << NUMBER_OF_ASTEROIDS << " random asteroids" << 
+	std::endl;
+	for(int i=0; i<NUMBER_OF_ASTEROIDS; i++) {
+		Model* mAsteroid = resources->getModel("asteroid");
+		unsigned int asteroid = resources->addEntity(Entity(mAsteroid));
+		Entity *eAsteroid = resources->getEntity(asteroid);
+		randomizeAsteroidData(eAsteroid);	
+	}
+
+}
 
 

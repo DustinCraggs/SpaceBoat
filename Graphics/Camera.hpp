@@ -20,6 +20,8 @@ public:
 	glm::mat4 getCameraMatrix();
 	glm::mat4 getOrientationMatrix();
 
+	float getFarClippingPlane();
+
 	// Move camera
 	// Looking
 	void lookAt(glm::vec3 target, glm::vec3 up);

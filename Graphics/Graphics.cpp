@@ -73,7 +73,6 @@ void Graphics::loadSkyBoxes(std::string directory) {
 	unsigned int shader = resources->getShader("cubemap");
 	for(int i=0; i<directories.size(); i++) {
 		std::string fileName(directories.at(i));
-		std::cout << "Adding skybox " << fileName << std::endl;
 		resources->addSkyBox(SkyBox(directory+directories[i], shader), fileName);
 	}
 }
@@ -103,7 +102,6 @@ void Graphics::loadShaders(std::string directory){
 }
 
 void Graphics::loadPlane() {
-	// std::cout << "Creating ground/track plane" << std::endl;
 	unsigned int trackShader = resources->getShader("track");
 	resources->addPlane(Plane(trackShader), "track");
 }
@@ -149,7 +147,7 @@ void Graphics::openWindow(unsigned int xdim, unsigned int ydim){
 	}
 
 	// GL
-	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+	glClearColor(0.5f, 0.5f, 0.5f, 1.0f);
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_MULTISAMPLE);
 	glFrontFace(GL_CCW);
