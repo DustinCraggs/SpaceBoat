@@ -87,6 +87,7 @@ void Plane::render(glm::mat4 projection, glm::mat4 model, glm::mat4 view) {
     glUniformMatrix4fv(projectionHandle, 1, GL_FALSE, glm::value_ptr(projection));
 
     glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     //glDisable(GL_DEPTH_TEST);
     glBindVertexArray(vaos[0]);
     glDrawElements(GL_TRIANGLES, TRIS_PER_FACE * VALS_PER_VERT, 

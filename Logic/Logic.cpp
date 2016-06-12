@@ -125,6 +125,13 @@ void Logic::loadCharacter(){
 	estar->resize(0.1f);
 	estar->reposition(-1.0f, 0.0f, 10.0f);
 
+	// Asteroid
+	// Model *mAsteroid = resources->getModel("asteroid");
+	// unsigned int asteroid = resources->addEntity(Entity(mAsteroid));
+	// Entity *eAsteroid = resources->getEntity(asteroid);
+	// eAsteroid->resize(0.1f);
+	// eAsteroid->reposition(-1.0f, 0.0f, 0.0f);
+
 }
 
 void Logic::loadCamera(){
@@ -137,7 +144,7 @@ void Logic::loadSkyBox() {
 	SkyBox *skyBoxModel = resources->getSkyBox("Spacebox2");
 	unsigned int skx = resources->addEntity(Entity(skyBoxModel));
 	Entity *skybox = resources->getEntity(skx);
-	skybox->resize(20.0f);
+	skybox->resize(500.0f);
 	skybox->reposition(0.0f, 2.0f, 10.0f);
 }
 
@@ -146,8 +153,8 @@ void Logic::loadTrack() {
 	Plane *mtrack = resources->getPlane("track");
 	track = resources->addEntity(Entity(mtrack));
 	Entity* eTrack = resources->getEntity(track); 
-	eTrack->resize(100.0f);
-	eTrack->reposition(0.0f, -10.0f, 0.0f);
+	eTrack->stretch(10.0f, 0.0f, 500.0f);
+	eTrack->reposition(0.0f, -1.0f, 0.0f);
 }
 
 

@@ -156,7 +156,7 @@ void Graphics::openWindow(unsigned int xdim, unsigned int ydim){
 	}
 
 	// GL
-	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+	glClearColor(0.5f, 0.5f, 0.5f, 1.0f);
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_MULTISAMPLE);
 	glFrontFace(GL_CCW);
