@@ -33,6 +33,12 @@ public:
 	void stretch(glm::vec3 stretchFactors);
 	void stretch(float xstretch, float ystretch, float zstretch);
 	void expand(float scaleFactor);
+
+	// Getting tranformation properties
+	glm::mat4 getTransform();
+	glm::vec3 getPosition();
+	glm::vec3 getOrientation();
+	glm::vec3 getScale();
 private:
 
 	glm::vec3 position;
@@ -43,12 +49,6 @@ private:
 	Geometry *geometry;
 
 	void updateTransformation();
-
-	// Getting tranformation properties
-	glm::mat4 getTransform();
-	glm::vec3 getPosition();
-	glm::vec3 getOrientation();
-	glm::vec3 getScale();
 };
 
 #endif

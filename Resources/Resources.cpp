@@ -5,6 +5,7 @@
 #include "Camera.hpp"
 #include "ParticleSystem.hpp"
 #include "SkyBox.hpp"
+#include "Plane.hpp"
 
 #include <iostream>
 #include <GL/glew.h>
@@ -14,7 +15,8 @@
 #define N_TRANS_ENT 1
 
 Resources::Resources(unsigned int maxEntities, unsigned int maxParticleSystems, 
-	unsigned int maxModels, unsigned int maxShaders, unsigned int maxSkyBoxes){
+	unsigned int maxModels, unsigned int maxShaders, unsigned int maxSkyBoxes,
+	unsigned int maxPlanes){
 	nEntities = 0;
 	nTransparentEntities = 0;
 	nParticleSystems = 0;
@@ -22,12 +24,15 @@ Resources::Resources(unsigned int maxEntities, unsigned int maxParticleSystems,
 	nShaders = 0;
 	nSkyBoxes = 0;
 	m_hasSkybox = false;
+	nPlanes = 0;
 	entities = new Entity[maxEntities];
 	transparentEntities = new Entity[N_TRANS_ENT];
 	particleSystems = new ParticleSystem[maxParticleSystems];
 	models = new Model[maxModels];
 	shaders = new unsigned int[maxShaders];
 	skyBoxes = new SkyBox[maxSkyBoxes];
+	planes = new Plane[maxPlanes];
+	std::cout << "Resources instantiated" << std::endl;
 }
 
 // Logic
@@ -114,12 +119,15 @@ Model *Resources::getModel(unsigned int i){
 }
 
 Model *Resources::getModel(std::string key){
-	// std::cout << "Model " << modelNames[key] << std::endl;
 	return models + modelNames[key];
 }
 
 SkyBox* Resources::getSkyBox(std::string key) {
 	return skyBoxes + skyBoxNames[key];
+}
+
+Plane* Resources::getPlane(std::string key) {
+	return planes + planeNames[key];
 }
 
 unsigned int Resources::getShader(unsigned int i){
@@ -167,7 +175,10 @@ unsigned int Resources::addSkyBox(SkyBox skybox, std::string name) {
 	return nSkyBoxes++;
 }
 
-
-
-
+unsigned int Resources::addPlane(Plane plane, std::string name) {
+	std::cout << name << std::endl;
+	planes[nPlanes] = plane;
+	planeNames[name] = nPlanes;
+	return nPlanes++;
+}
 

@@ -55,8 +55,8 @@ void SkyBox::render(glm::mat4 projection, glm::mat4 model, glm::mat4 view) {
     glm::mat4 modelview = view * model;
 
     // Load transformation matrices
-    // GLint viewHandle = glGetUniformLocation(PID, "view_matrix");
-    // glUniformMatrix4fv(viewHandle, 1, GL_FALSE, glm::value_ptr(view));
+    GLint viewHandle = glGetUniformLocation(PID, "view_matrix");
+    glUniformMatrix4fv(viewHandle, 1, GL_FALSE, glm::value_ptr(view));
 
     GLint modelViewHandle = glGetUniformLocation(PID, "modelview_matrix");
     glUniformMatrix4fv(modelViewHandle, 1, GL_FALSE, glm::value_ptr(modelview));

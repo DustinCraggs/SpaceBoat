@@ -188,3 +188,17 @@ void Camera::zoom(float amount){
 	}
 }
 
+// Orientation
+void Camera::rotate(float radians, glm::vec3 axis){
+	axis /= length(axis);
+	orientation += radians * axis;
+}
+
+void Camera::rotate(glm::vec3 rotation){
+	orientation += rotation;
+}
+
+void Camera::rotate(float xrad, float yrad, float zrad){
+	orientation += glm::vec3(xrad, yrad, zrad);
+}
+

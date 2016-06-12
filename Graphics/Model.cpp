@@ -50,6 +50,12 @@ Model::Model(std::string path, unsigned int shader){
 	genTextures(objDir);
 }
 
+void Model::changeShader(unsigned int PID) {
+	for(int i=0; i<shaders.size(); i++) {
+		shaders[i] = PID;
+	}
+}
+
 void Model::genVaos(){
 	vaos.resize(shapes.size());
 	glGenVertexArrays(shapes.size(), vaos.data());

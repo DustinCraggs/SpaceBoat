@@ -2,6 +2,7 @@
 dirs = Control Graphics Logic Physics Resources Libs
 
 # Source files to compile
+<<<<<<< HEAD
 # Add source files here
 control		= Control.cpp
 logic		= Logic.cpp Entity.cpp
@@ -11,7 +12,7 @@ physics 	= Physics.cpp ParticleSystem.cpp
 libs		= tiny_obj_loader.cc Shader.cpp
 
 # Debug mode
-debug = false
+debug = true
 
 control_files 	= $(addprefix Control/, $(control))
 logic_files 	= $(addprefix Logic/, $(logic))

@@ -5,7 +5,9 @@
 
 #include <iostream>
 #include <glm/glm.hpp>
+#include <glm/ext.hpp>
 #include <GLFW/glfw3.h>
+// #include <irrKlang.h>
 
 #define TEST true
 
@@ -38,13 +40,28 @@ void Logic::registerCallbacks(){
 
 void Logic::key_callback(GLFWwindow *window, int key, int scancode, int action, int mods){
 	Logic *logic = static_cast<Logic *>(glfwGetWindowUserPointer(window));
+	Entity* craft = logic->resources->getEntity(logic->character);
+    glm::vec3 orientation = craft->getOrientation();
 	if( action == GLFW_PRESS || action == GLFW_REPEAT ){
 		switch( key ){
-			case GLFW_KEY_Z:
-				// Zoom
-			break;
+			// case GLFW_KEY_Z:
+			// 	// Zoom
+			// 	break;
+			// case GLFW_KEY_UP:
+	  //          	//craft->move(0.1f * orientation);
+	  //           break;
+	  //       case GLFW_KEY_RIGHT:
+	  //           craft->rotate(0.1f * glm::vec3(0.0f, 1.0f, 0.0f));
+	  //           logic->camera->rotate(0.1f * glm::vec3(0.0f, 1.0f, 0.0f));
+	  //           break;
+	  //       case GLFW_KEY_LEFT:
+	  //          	craft->rotate(-0.1f * glm::vec3(0.0f, 1.0f, 0.0f));
+	  //          	logic->camera->rotate(0.1f * glm::vec3(0.0f, 1.0f, 0.0f));
+	  //           break;
 		}
-		// camera.move(0.1f * direction);
+
+
+		//camera.move(0.1f * direction);
 	}
 }
 
@@ -60,16 +77,6 @@ void Logic::click_callback(GLFWwindow *window, int button, int action, int mods)
 			logic->leftMouseDown = false;
 		}
 	}
-	// else if( button == GLFW_MOUSE_BUTTON_RIGHT && !logic->leftMouseDown ){
-	// 	if( action == GLFW_PRESS ){
-	// 		glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
-	// 		glfwGetCursorPos(window, &logic->xprev, &logic->yprev);
-	// 		logic->rightMouseDown = true;
-	// 	}else if( action == GLFW_RELEASE ){
-	// 		glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
-	// 		logic->rightMouseDown = false;
-	// 	}
-	// }
 }
 
 void Logic::cursor_position_callback(GLFWwindow *window, double xpos, double ypos){
@@ -91,25 +98,42 @@ void Logic::window_resize_callback(GLFWwindow *window, int x, int y){
 
 
 void Logic::loadInitialGameState(){
+	std::cout << "loading initial game state" << std::endl;
 	loadCamera();
 	loadCharacter();
 	loadSkyBox();
+	loadTrack();
+	std::cout << "All game entities loaded" << std::endl;
 	glfwSetWindowUserPointer(window, this);
 	registerCallbacks();
 }
 	
 void Logic::loadCharacter(){
-	Model *model = resources->getModel("Wavecraft2");
-	character = resources->addEntity(Entity(model));
-	model = resources->getModel("star");
-	unsigned int star = resources->addEntity(Entity(model));
-	// std::cout << "star " << star << std::endl;
-	// std::cout << "char " << character << std::endl;
-	Entity *ent1 = resources->getEntity(character);
-	Entity *ent2 = resources->getEntity(star);
-	ent2->rescale(0.2f, 0.2f, 0.2f);
+
+	// model = resources->getModel("star");
+	// unsigned int star = resources->addEntity(Entity(model));
+	// Entity *ent1 = resources->getEntity(character);
+	// Entity *ent2 = resources->getEntity(star);
+	// ent2->rescale(0.2f, 0.2f, 0.2f);
 	// ent->reposition(0.0f, 1.0f, 0.0f);
 	// ent->reorient(glm::vec3(1.0f, 0.0f, 0.0f));
+
+	unsigned int starShader = resources->getShader("debug_normal");
+	Model *model1 = resources->getModel("star");
+	model1->changeShader(starShader);
+	unsigned int star = resources->addEntity(Entity(model1));
+
+	
+	Model *model = resources->getModel("Wavecraft2");
+	character = resources->addEntity(Entity(model));
+	Entity *ent = resources->getEntity(character);
+	ent->rescale(2.0f, 2.0f, 2.0f);
+	ent->reposition(0.0f, 1.0f, 0.0f);
+	//ent->reorient(glm::vec3(0.0f, 0.0f, 1.0f));
+
+	Entity* estar = resources->getEntity(star);
+	estar->resize(0.1f);
+	estar->reposition(-1.0f, 0.0f, 10.0f);
 
 }
 
@@ -122,10 +146,20 @@ void Logic::loadCamera(){
 void Logic::loadSkyBox() {
 	SkyBox *skyBoxModel = resources->getSkyBox("Spacebox5");
 	Entity *skybox = resources->setCurrentSkybox(Entity(skyBoxModel));
-	// skybox->reposition(0.0f, 2.0f, 10.0f);
 }
 
+void Logic::loadTrack(){
 
+}
+
+void Logic::loadTrack() {
+	std::cout << "loading track" << std::endl;
+	Plane *mtrack = resources->getPlane("track");
+	track = resources->addEntity(Entity(mtrack));
+	Entity* eTrack = resources->getEntity(track); 
+	eTrack->resize(100.0f);
+	eTrack->reposition(0.0f, -10.0f, 0.0f);
+}
 
 
 

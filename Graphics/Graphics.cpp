@@ -22,13 +22,12 @@ Graphics::Graphics(Resources *resources){
 	std::cout << "Graphics instantiated" << std::endl;
 }
 
-
 // Loading stuff
-
 void Graphics::loadGraphicsData(std::string directory){
 	loadShaders(directory + "Shaders/");
 	loadModels(directory + "Models/");
 	loadSkyBoxes(directory + "SkyBoxes/");
+	loadPlane();
 }
 
 void Graphics::loadModels(std::string directory){
@@ -104,6 +103,12 @@ void Graphics::loadShaders(std::string directory){
 		std::cout << "Adding shader " << fileName << std::endl;
 		resources->addShader(compileShader(directory + name), name);
 	}
+}
+
+void Graphics::loadPlane() {
+	std::cout << "Creating ground/track plane" << std::endl;
+	unsigned int trackShader = resources->getShader("track");
+	resources->addPlane(Plane(trackShader), "track");
 }
 
 unsigned int Graphics::compileShader(std::string path){
@@ -220,8 +225,6 @@ void Graphics::renderUserInterface(){
 bool Graphics::windowShouldClose(){
 	return glfwWindowShouldClose(window);
 }
-
-
 
 
 
