@@ -4,7 +4,6 @@
 #include "Geometry.hpp"
 
 class Entity {
-	
 public:
 	Entity();
 	Entity(Geometry*);

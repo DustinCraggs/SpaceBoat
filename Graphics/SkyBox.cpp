@@ -51,7 +51,7 @@ void SkyBox::render(glm::mat4 projection, glm::mat4 model, glm::mat4 view) {
 
     unsigned int PID = shaders.at(0);
     glUseProgram(PID);
-
+    glDisable(GL_DEPTH_TEST);
     glm::mat4 modelview = view * model;
 
     // Load transformation matrices
@@ -68,6 +68,7 @@ void SkyBox::render(glm::mat4 projection, glm::mat4 model, glm::mat4 view) {
     glBindTexture(GL_TEXTURE_CUBE_MAP, textures[activeTexture]);
     glBindVertexArray(vaos[0]);
     glDrawArrays(GL_TRIANGLES, 0, CUBE_NUM_FACES * TRIS_PER_FACE * VALS_PER_VERT);
+    glEnable(GL_DEPTH_TEST);
 }
 
 // Take what is stored in the filenames array currently, and load that texture
@@ -80,7 +81,6 @@ unsigned int SkyBox::loadTexture() {
 	int x, y, n;
 	unsigned char* data;
 	for(int i=0; i<CUBE_NUM_FACES; i++) {
-        std::cout << "loading file " <<  filenames[i] << std::endl;
 		data = stbi_load(filenames[i].c_str(), &x, &y, &n, STBI_rgb);
 		glTexImage2D(types[i], 0, GL_RGB, x, y, 0, GL_RGB, GL_UNSIGNED_BYTE, 
 			data);

@@ -120,10 +120,6 @@ void error_callback(int error, const char* description){
 	fputs("\n", stderr);
 }
 
-// void Graphics::loadWindow(){
-
-// }
-
 void Graphics::openWindow(unsigned int xdim, unsigned int ydim){
 	// GLFW
 	glfwSetErrorCallback(error_callback);
@@ -166,8 +162,19 @@ void Graphics::renderFrame(){
 	glm::mat4 projection = camera->getProjection();
 	glm::mat4 view = camera->getView();
 
+	// Skybox
+	if( resources->hasSkybox() ){
+		renderSkybox(projection, camera->getOrientationMatrix());
+	}
+
+	// Entities
 	renderEntities(projection, view);
+	renderTransparentEntities(projection, view);
+
+	// Particles
 	renderParticleSystems(projection, view);
+
+	// UI
 	renderUserInterface();
 
 	glFlush();
@@ -175,11 +182,27 @@ void Graphics::renderFrame(){
 	// glfwPollEvents();
 }
 
+void Graphics::renderSkybox(glm::mat4 projection, glm::mat4 camOrientation){
+	resources->getCurrentSkybox()->render(projection, camOrientation);
+}
+
 void Graphics::renderEntities(glm::mat4 projection, glm::mat4 view){
 	Entity *entities = resources->getEntityData();
 	for( int i=0; i<resources->entitySize(); i++ ){
 		(entities+i)->render(projection, view);
 	}
+}
+
+void Graphics::renderTransparentEntities(glm::mat4 projection, glm::mat4 view){
+	glDepthMask(false);
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	Entity *transparentEntities = resources->getTransparentEntityData();
+	for( int i=0; i<resources->transparentEntitySize(); i++ ){
+		(transparentEntities+i)->render(projection, view);
+	}
+	glDepthMask(true);
+	glDisable(GL_BLEND);
 }
 
 void Graphics::renderParticleSystems(glm::mat4 projection, glm::mat4 view){

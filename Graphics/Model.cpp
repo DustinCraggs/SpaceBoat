@@ -108,8 +108,6 @@ void Model::genTextures(std::string directory){
 		glBindTexture(GL_TEXTURE_2D, textures[i]);
 		std::string texname = materials[i].diffuse_texname;
 		if( !texname.empty() ){
-			std::cout << "Texname " << directory + texname << std::endl;
-			// loadDefaultTexture();
 			loadTexture(directory + texname);
 		}else{
 			loadDefaultTexture();
@@ -120,6 +118,11 @@ void Model::genTextures(std::string directory){
 void Model::loadTexture(std::string path){
 	int x, y, n;
 	unsigned char *data = stbi_load(path.c_str(), &x, &y, &n, 3);
+	if( data==NULL ){
+		std::cout << "Texture " << path << " could not be loaded" << std::endl;
+		loadDefaultTexture();
+		return;
+	}
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, x, y, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
 	stbi_image_free(data);
 	glGenerateMipmap(GL_TEXTURE_2D);

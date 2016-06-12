@@ -7,6 +7,8 @@
 #include <glm/glm.hpp>
 #include <GLFW/glfw3.h>
 
+#define TEST true
+
 Logic::Logic(Resources *resources){
 	this->resources = resources;
 	window = resources->getWindow();
@@ -99,12 +101,13 @@ void Logic::loadInitialGameState(){
 void Logic::loadCharacter(){
 	Model *model = resources->getModel("Wavecraft2");
 	character = resources->addEntity(Entity(model));
-	// Model *model = resources->getModel("star");
-	// unsigned int star = resources->addEntity(Entity(model));
+	model = resources->getModel("star");
+	unsigned int star = resources->addEntity(Entity(model));
 	// std::cout << "star " << star << std::endl;
 	// std::cout << "char " << character << std::endl;
-	Entity *ent = resources->getEntity(character);
-	// ent->rescale(2.0f, 2.0f, 2.0f);
+	Entity *ent1 = resources->getEntity(character);
+	Entity *ent2 = resources->getEntity(star);
+	ent2->rescale(0.2f, 0.2f, 0.2f);
 	// ent->reposition(0.0f, 1.0f, 0.0f);
 	// ent->reorient(glm::vec3(1.0f, 0.0f, 0.0f));
 
@@ -118,10 +121,8 @@ void Logic::loadCamera(){
 
 void Logic::loadSkyBox() {
 	SkyBox *skyBoxModel = resources->getSkyBox("Spacebox5");
-	unsigned int skx = resources->addEntity(Entity(skyBoxModel));
-	Entity *skybox = resources->getEntity(skx);
-	skybox->resize(20.0f);
-	skybox->reposition(0.0f, 2.0f, 10.0f);
+	Entity *skybox = resources->setCurrentSkybox(Entity(skyBoxModel));
+	// skybox->reposition(0.0f, 2.0f, 10.0f);
 }
 
 

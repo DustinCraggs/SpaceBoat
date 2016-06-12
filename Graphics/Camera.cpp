@@ -80,6 +80,15 @@ glm::mat4 Camera::getCameraMatrix(){
 	return camera;
 }
 
+glm::mat4 Camera::getOrientationMatrix(){
+	if( eyeChanged ){
+		updateCameraMatrix();
+	}
+	glm::mat4 orientationMat(view);
+	orientationMat[3] = glm::vec4(0.0f, 0.0f, 0.0f, 1.0f);
+	return orientationMat;
+}
+
 // Updating matrices
 
 inline void Camera::updateCameraMatrix(){
