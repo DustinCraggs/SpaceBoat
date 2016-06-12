@@ -5,6 +5,7 @@
 #include "Camera.hpp"
 #include "ParticleSystem.hpp"
 #include "SkyBox.hpp"
+#include "Plane.hpp"
 
 #include <iostream>
 #include <GL/glew.h>
@@ -13,17 +14,20 @@
 // TODO: Error checking for exceeding bounds of containers
 
 Resources::Resources(unsigned int maxEntities, unsigned int maxParticleSystems, 
-	unsigned int maxModels, unsigned int maxShaders, unsigned int maxSkyBoxes){
+	unsigned int maxModels, unsigned int maxShaders, unsigned int maxSkyBoxes,
+	unsigned int maxPlanes){
 	nEntities = 0;
 	nParticleSystems = 0;
 	nModels = 0;
 	nShaders = 0;
 	nSkyBoxes = 0;
+	nPlanes = 0;
 	entities = new Entity[maxEntities];
 	particleSystems = new ParticleSystem[maxParticleSystems];
 	models = new Model[maxModels];
 	shaders = new unsigned int[maxShaders];
 	skyBoxes = new SkyBox[maxSkyBoxes];
+	planes = new Plane[maxPlanes];
 	std::cout << "Resources instantiated" << std::endl;
 }
 
@@ -40,6 +44,7 @@ Entity *Resources::getEntityData(){
 Entity *Resources::getEntity(unsigned int i){
 	return entities+i;
 }
+
 
 // Set
 unsigned int Resources::addEntity(Entity entity){
@@ -83,9 +88,11 @@ Model *Resources::getModel(std::string key){
 }
 
 SkyBox* Resources::getSkyBox(std::string key) {
-	std::cout << "Map " << modelNames["Spacebox2"] << std::endl;
-	std::cout << "Map " << modelNames["Spacebox5"] << std::endl;
 	return skyBoxes + skyBoxNames[key];
+}
+
+Plane* Resources::getPlane(std::string key) {
+	return planes + planeNames[key];
 }
 
 unsigned int Resources::getShader(unsigned int i){
@@ -129,12 +136,16 @@ unsigned int Resources::addShader(unsigned int shader, std::string name){
 }
 
 unsigned int Resources::addSkyBox(SkyBox skybox, std::string name) {
+	std::cout << name << std::endl;
 	skyBoxes[nSkyBoxes] = skybox;
 	skyBoxNames[name] = nSkyBoxes;
 	return nSkyBoxes++;
 }
 
-
-
-
+unsigned int Resources::addPlane(Plane plane, std::string name) {
+	std::cout << name << std::endl;
+	planes[nPlanes] = plane;
+	planeNames[name] = nPlanes;
+	return nPlanes++;
+}
 

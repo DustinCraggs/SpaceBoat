@@ -7,6 +7,8 @@
 #include "Camera.hpp"
 
 Camera::Camera(int xsize, int ysize, float fovy, float near, float far){
+	xWindowSize = xsize;
+	yWindowSize = ysize;
 	// Flags
 	orientationFixed = false;
 	eyeChanged = true;
@@ -33,6 +35,10 @@ void Camera::setWindowSize(int x, int y){
 }
 
 // Get methods
+
+glm::vec2 Camera::getWindowSize(){
+	return glm::vec2(xWindowSize, yWindowSize);
+}
 
 glm::vec3 Camera::getTarget(){
 	return target;
@@ -173,7 +179,17 @@ void Camera::zoom(float amount){
 	}
 }
 
-void Camera::rotate(float xRotation, float yRotation) {
+// Orientation
+void Camera::rotate(float radians, glm::vec3 axis){
+	axis /= length(axis);
+	orientation += radians * axis;
+}
 
+void Camera::rotate(glm::vec3 rotation){
+	orientation += rotation;
+}
+
+void Camera::rotate(float xrad, float yrad, float zrad){
+	orientation += glm::vec3(xrad, yrad, zrad);
 }
 

@@ -12,4 +12,5 @@ void main(void)
 {
     // Texture lookup, just as for 2D texture mapping
     fragColour = texture(skybox, texCoord);
+    // fragColour = vec4(1.0, 0.2, 1.0, 1.0);
 }

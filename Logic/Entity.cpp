@@ -28,7 +28,7 @@ Entity::Entity(Geometry *geometry){
 }
 
 void Entity::updateTransformation(){
-	transformation = glm::translate(glm::mat4(), position);
+	transformation = glm::translate(glm::mat4(1.0f), position);
 	transformation = glm::scale(transformation, scale);
 	transformation = glm::rotate(transformation, orientation.x, glm::vec3(1.0f, 0.0f, 0.0f));
 	transformation = glm::rotate(transformation, orientation.y, glm::vec3(0.0f, 1.0f, 0.0f));
@@ -38,7 +38,6 @@ void Entity::updateTransformation(){
 // Rendering
 void Entity::render(glm::mat4 projection, glm::mat4 view){
 	updateTransformation();
-	cout << glm::to_string(transformation) << endl;
 	geometry->render(projection, transformation, view);
 }
 
@@ -93,7 +92,7 @@ void Entity::rescale(float xscale, float yscale, float zscale){
 }
 
 void Entity::resize(float scaleFactor){
-	scale = glm::vec3(scaleFactor);
+	scale = glm::vec3(scaleFactor, scaleFactor, scaleFactor);
 }
 
 /**

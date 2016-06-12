@@ -22,11 +22,14 @@ private:
 	// Loading stuff
 	void loadCharacter();
 	void loadCamera();
-
+	void loadTrack();
 	void loadSkyBox();
 	Resources *resources;
 
+	// Camera stuff
 	Camera *camera;
+	double xprev, yprev;
+	bool leftMouseDown;
 	
 	GLFWwindow *window;
 
@@ -39,6 +42,7 @@ private:
 
 	// Keeping track of entities
 	unsigned int character;
+	unsigned int track;
 };
 
 #endif
