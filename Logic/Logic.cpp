@@ -7,7 +7,12 @@
 #include <glm/glm.hpp>
 #include <glm/ext.hpp>
 #include <GLFW/glfw3.h>
+
 // #include <irrKlang.h>
+
+
+#define NUMBER_OF_ASTEROIDS 10
+#define TEST true
 
 Logic::Logic(Resources *resources){
 	this->resources = resources;
@@ -42,20 +47,12 @@ void Logic::key_callback(GLFWwindow *window, int key, int scancode, int action, 
     glm::vec3 orientation = craft->getOrientation();
 	if( action == GLFW_PRESS || action == GLFW_REPEAT ){
 		switch( key ){
-			// case GLFW_KEY_Z:
-			// 	// Zoom
-			// 	break;
-			// case GLFW_KEY_UP:
-	  //          	//craft->move(0.1f * orientation);
-	  //           break;
-	  //       case GLFW_KEY_RIGHT:
-	  //           craft->rotate(0.1f * glm::vec3(0.0f, 1.0f, 0.0f));
-	  //           logic->camera->rotate(0.1f * glm::vec3(0.0f, 1.0f, 0.0f));
-	  //           break;
-	  //       case GLFW_KEY_LEFT:
-	  //          	craft->rotate(-0.1f * glm::vec3(0.0f, 1.0f, 0.0f));
-	  //          	logic->camera->rotate(0.1f * glm::vec3(0.0f, 1.0f, 0.0f));
-	  //           break;
+			case GLFW_KEY_Z:
+				// Zoom
+				break;
+			case GLFW_KEY_UP:
+	           	logic->camera->move(glm::vec3(0.0f, 0.0f, 1.0f));
+	            break;
 		}
 
 
@@ -100,6 +97,7 @@ void Logic::loadInitialGameState(){
 	loadCamera();
 	loadCharacter();
 	loadSkyBox();
+	std::cout << "BUTTSBURG" << std::endl;
 	loadTrack();
 	std::cout << "All game entities loaded" << std::endl;
 	glfwSetWindowUserPointer(window, this);
@@ -107,54 +105,54 @@ void Logic::loadInitialGameState(){
 }
 	
 void Logic::loadCharacter(){
+	std::cout << "Loading character" << std::endl;
 	unsigned int starShader = resources->getShader("debug_normal");
-	std::cout << "starShader: " << starShader << std::endl;
-
-	Model *model = resources->getModel("Wavecraft2");
-	character = resources->addEntity(Entity(model));
-
 	Model *model1 = resources->getModel("star");
 	model1->changeShader(starShader);
 	unsigned int star = resources->addEntity(Entity(model1));
 
+	
+	Model *model = resources->getModel("Wavecraft2");
+	character = resources->addEntity(Entity(model));
 	Entity *ent = resources->getEntity(character);
-	ent->rescale(2.0f, 2.0f, 2.0f);
-	ent->reposition(0.0f, 1.0f, 0.0f);
+	ent->resize(0.05f);
+	ent->reposition(0.0f, 1.0f, -2.0f);
 	//ent->reorient(glm::vec3(0.0f, 0.0f, 1.0f));
+
 	Entity* estar = resources->getEntity(star);
 	estar->resize(0.1f);
 	estar->reposition(-1.0f, 0.0f, 10.0f);
 
 	// Asteroid
-	// Model *mAsteroid = resources->getModel("asteroid");
-	// unsigned int asteroid = resources->addEntity(Entity(mAsteroid));
-	// Entity *eAsteroid = resources->getEntity(asteroid);
-	// eAsteroid->resize(0.1f);
-	// eAsteroid->reposition(-1.0f, 0.0f, 0.0f);
+	Model *mAsteroid = resources->getModel("asteroid");
+	unsigned int asteroid = resources->addEntity(Entity(mAsteroid));
+	Entity *eAsteroid = resources->getEntity(asteroid);
+	eAsteroid->resize(0.5f);
+	eAsteroid->reposition(-10.0f, 0.0f, 0.0f);
 
 }
 
 void Logic::loadCamera(){
+	std::cout << "Loading camera" << std::endl;
 	camera = resources->getCamera();
-	camera->reposition(glm::vec3(0.0f, 2.0f, 10.0f));
+	camera->reposition(glm::vec3(0.0f, 2.0f, 1.0f));
 	camera->lookAt(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
 }
 
 void Logic::loadSkyBox() {
+	std::cout << "Loading skybox" << std::endl;
 	SkyBox *skyBoxModel = resources->getSkyBox("Spacebox2");
-	unsigned int skx = resources->addEntity(Entity(skyBoxModel));
-	Entity *skybox = resources->getEntity(skx);
-	skybox->resize(500.0f);
-	skybox->reposition(0.0f, 2.0f, 10.0f);
+	Entity *skybox = resources->setCurrentSkybox(Entity(skyBoxModel));
 }
 
 void Logic::loadTrack() {
+	std::cout << "BUTTS" << std::endl;
 	std::cout << "loading track" << std::endl;
 	Plane *mtrack = resources->getPlane("track");
 	track = resources->addEntity(Entity(mtrack));
-	Entity* eTrack = resources->getEntity(track); 
-	eTrack->stretch(10.0f, 0.0f, 500.0f);
-	eTrack->reposition(0.0f, -1.0f, 0.0f);
+	Entity* eTrack = resources->getEntity(track);
+	std::cout << "zfar plane: " << resources->getZFarPlane() << std::endl;
+	eTrack->stretch(1.0f, 0.0f, 100.0f);
 }
 
 

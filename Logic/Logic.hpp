@@ -43,6 +43,7 @@ private:
 	// Keeping track of entities
 	unsigned int character;
 	unsigned int track;
+	unsigned int asteroids;
 };
 
 #endif

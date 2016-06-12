@@ -12,17 +12,21 @@
 #include <GLFW/glfw3.h>
 
 // TODO: Error checking for exceeding bounds of containers
+#define N_TRANS_ENT 1
 
 Resources::Resources(unsigned int maxEntities, unsigned int maxParticleSystems, 
 	unsigned int maxModels, unsigned int maxShaders, unsigned int maxSkyBoxes,
 	unsigned int maxPlanes){
 	nEntities = 0;
+	nTransparentEntities = 0;
 	nParticleSystems = 0;
 	nModels = 0;
 	nShaders = 0;
 	nSkyBoxes = 0;
+	m_hasSkybox = false;
 	nPlanes = 0;
 	entities = new Entity[maxEntities];
+	transparentEntities = new Entity[N_TRANS_ENT];
 	particleSystems = new ParticleSystem[maxParticleSystems];
 	models = new Model[maxModels];
 	shaders = new unsigned int[maxShaders];
@@ -33,6 +37,15 @@ Resources::Resources(unsigned int maxEntities, unsigned int maxParticleSystems,
 
 // Logic
 // Get
+
+bool Resources::hasSkybox(){
+	return m_hasSkybox;
+}
+
+Entity *Resources::getCurrentSkybox(){
+	return &currentSkybox;
+}
+
 unsigned int Resources::entitySize(){
 	return nEntities;
 }
@@ -45,12 +58,38 @@ Entity *Resources::getEntity(unsigned int i){
 	return entities+i;
 }
 
+unsigned int Resources::transparentEntitySize(){
+	return nTransparentEntities;
+}
+
+Entity *Resources::getTransparentEntityData(){
+	return transparentEntities;
+}
+
+Entity *Resources::getTransparentEntity(unsigned int i){
+	return transparentEntities + i;
+}
+
+float Resources::getZFarPlane() {
+	return camera.getFarClippingPlane();
+}
 
 // Set
+
+Entity *Resources::setCurrentSkybox(Entity skybox){
+	currentSkybox = skybox;
+	m_hasSkybox = true;
+	return &currentSkybox;
+}
+
 unsigned int Resources::addEntity(Entity entity){
-	std::cout << "Entity " << nEntities << " registered" << std::endl;
 	entities[nEntities] = entity;
 	return nEntities++;
+}
+
+unsigned int Resources::addTransparentEntity(Entity entity){
+	transparentEntities[nTransparentEntities] = entity;
+	return nTransparentEntities++;
 }
 
 // Physics
@@ -122,14 +161,12 @@ void Resources::setWindow(GLFWwindow *window){
 }
 
 unsigned int Resources::addModel(Model model, std::string name){
-	// std::cout << "Model " << name << " has been registered" << std::endl;
 	models[nModels] = model;
 	modelNames[name] = nModels;
 	return nModels++;
 }
 
 unsigned int Resources::addShader(unsigned int shader, std::string name){
-	// std::cout << "Shader " << name << " has been registered" << std::endl;
 	shaders[nShaders] = shader;
 	shaderNames[name] = nShaders;
 	return nShaders++;

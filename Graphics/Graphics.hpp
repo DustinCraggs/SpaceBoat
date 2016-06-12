@@ -22,7 +22,9 @@ public:
 
 	// Rendering
 	void renderFrame();
+	void renderSkybox(glm::mat4 projection, glm::mat4 camOrientation);
 	void renderEntities(glm::mat4 projection, glm::mat4 view);
+	void renderTransparentEntities(glm::mat4 projection, glm::mat4 view);
 	void renderParticleSystems(glm::mat4 projection, glm::mat4 view);
 	void renderUserInterface();
 

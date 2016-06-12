@@ -20,12 +20,19 @@ public:
 		unsigned int maxSkyboxes, unsigned int maxPlanes);
 	// Logic
 	// Get
+	bool hasSkybox();
+	Entity *getCurrentSkybox();
 	unsigned int entitySize();
 	Entity *getEntityData();
 	Entity *getEntity(unsigned int i);
+	unsigned int transparentEntitySize();
+	Entity *getTransparentEntityData();
+	Entity *getTransparentEntity(unsigned int i);
 	
 	// Set
+	Entity *setCurrentSkybox(Entity entity);
 	unsigned int addEntity(Entity entity);
+	unsigned int addTransparentEntity(Entity entity);
 
 	// Physics
 	// Get
@@ -45,6 +52,7 @@ public:
 	Plane *getPlane(std::string key);
 	unsigned int getShader(unsigned int i);
 	unsigned int getShader(std::string key);
+	float getZFarPlane();
 
 	Camera *getCamera();
 	GLFWwindow *getWindow();
@@ -59,8 +67,13 @@ public:
 private:
 	float dt;
 	// Logic
+	bool m_hasSkybox;
+	Entity currentSkybox;
+
 	unsigned int nEntities;
 	Entity *entities;
+	unsigned int nTransparentEntities;
+	Entity *transparentEntities;
 
 	// Physics
 	unsigned int nParticleSystems;
@@ -68,15 +81,19 @@ private:
 	
 	// Graphics
 	GLFWwindow *window;
+
 	unsigned int nModels;
 	Model *models;
 	std::map<std::string, unsigned int> modelNames;
+
 	unsigned int nShaders;
 	unsigned int *shaders;
 	std::map<std::string, unsigned int> shaderNames;
+
 	unsigned int nSkyBoxes;
 	SkyBox *skyBoxes;
 	std::map<std::string, unsigned int> skyBoxNames;
+
 	unsigned int nPlanes;
 	Plane *planes;
 	std::map<std::string, unsigned int> planeNames;
