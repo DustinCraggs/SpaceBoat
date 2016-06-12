@@ -8,15 +8,19 @@
 #include <glm/ext.hpp>
 #include <GLFW/glfw3.h>
 
+#include <chrono>
+#include <random>
+
 // #include <irrKlang.h>
 
 
-#define NUMBER_OF_ASTEROIDS 10
+#define NUMBER_OF_ASTEROIDS 100
 #define TEST true
 
 Logic::Logic(Resources *resources){
 	this->resources = resources;
 	window = resources->getWindow();
+	// construct a trivial random generator engine from a time-based seed:
 	std::cout << "Logic instantiated" << std::endl;
 }
 
@@ -98,6 +102,7 @@ void Logic::loadInitialGameState(){
 	loadCharacter();
 	loadSkyBox();
 	loadTrack();
+	loadRandomAsteroids();
 	std::cout << "All game entities loaded" << std::endl;
 	glfwSetWindowUserPointer(window, this);
 	registerCallbacks();
@@ -140,25 +145,40 @@ void Logic::loadSkyBox() {
 void Logic::loadTrack() {
 	std::cout << "loading track" << std::endl;
 	Plane *mtrack = resources->getPlane("track");
-	track = resources->addEntity(Entity(mtrack));
-	Entity* eTrack = resources->getEntity(track);
+	track = resources->addTransparentEntity(Entity(mtrack));
+	Entity* eTrack = resources->getTransparentEntity(track);
 	eTrack->stretch(1.0f, 0.0f, resources->getZFarPlane());
 }
 
+void Logic::randomizeAsteroidData(Entity* asteroid) {
+	seed = std::chrono::system_clock::now().time_since_epoch().count();
+	float zFarPlane = resources->getZFarPlane();
+  	std::default_random_engine generator(seed);
 
-// void Logic::loadRandomAsteroids() {
+  	// asteroid vertices are huge
+  	std::uniform_real_distribution<float> distribution(0.01f, 0.2f);
+  	asteroid->resize(distribution(generator));
+  	std::uniform_real_distribution<float> distribution2(-10.0f, 10.0f);
+  	asteroid->reorient(distribution2(generator),distribution2(generator),
+  		distribution2(generator));
 
-// 	for(int i=0; i<NUMBER_OF_ASTEROIDS; i++) {
-// 		Model* mAsteroid = resources->getModel("asteroid");
-// 		unsigned int asteroid = resources->addEntity(Entity(mAsteroid));
-// 		Entity *eAsteroid = resources->getEntity(asteroid);
-// 		randomizeAsteroidData(eAsteroid)
-// 	}
+  	// positions between -zfar and +zfar
+  	std::uniform_real_distribution<float> zFarDist(-zFarPlane, zFarPlane);
+  	asteroid->reposition(glm::vec3(distribution2(generator), distribution2(generator), 
+  		zFarDist(generator)));
+}
 
-// }
 
-// void randomizeAsteroidData(Entity* asteroid) {
+void Logic::loadRandomAsteroids() {
+	std::cout << "creating " << NUMBER_OF_ASTEROIDS << " random asteroids" << 
+	std::endl;
+	for(int i=0; i<NUMBER_OF_ASTEROIDS; i++) {
+		Model* mAsteroid = resources->getModel("asteroid");
+		unsigned int asteroid = resources->addEntity(Entity(mAsteroid));
+		Entity *eAsteroid = resources->getEntity(asteroid);
+		randomizeAsteroidData(eAsteroid);	
+	}
 
-// }
+}
 
 

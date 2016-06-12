@@ -24,7 +24,7 @@ Control::Control() :
 	logic(&resources),
 	graphics(&resources) {
 	graphics.loadGraphicsData("Assets/");
-	resources.setCamera(Camera(WINDOW_X, WINDOW_Y, (float)(M_PI/4), 0.05f, 500.0f));
+	resources.setCamera(Camera(WINDOW_X, WINDOW_Y, (float)(M_PI/4), 0.05f, 100.0f));
 }
 
 void Control::startGame(){
