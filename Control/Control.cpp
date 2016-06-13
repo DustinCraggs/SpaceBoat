@@ -19,22 +19,20 @@
 #define MAX_PLANES 1
 
 Control::Control() : 	
-	resources(MAX_ENTS, MAX_PART_SYSTEMS, MAX_MODELS, MAX_SHADERS, MAX_SKYBOXES,
-		MAX_PLANES),
+	resources(MAX_ENTS, MAX_PART_SYSTEMS, MAX_MODELS, MAX_SHADERS, MAX_SKYBOXES, MAX_PLANES),
 	logic(&resources),
-	graphics(&resources) {
+	graphics(&resources),
+	physics(&resources) {
 	graphics.loadGraphicsData("Assets/");
 	resources.setCamera(Camera(WINDOW_X, WINDOW_Y, (float)(M_PI/4), 0.05f, 100.0f));
 }
 
 void Control::startGame(){
-	// graphics.openWindow(WINDOW_X, WINDOW_Y);
-
 	logic.loadInitialGameState();
 	// Main loop
 	while( !graphics.windowShouldClose() ){
 		logic.update();
-		// physics.update();
+		physics.update();
 		graphics.renderFrame();
 	}
 }

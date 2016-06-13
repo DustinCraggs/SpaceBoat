@@ -8,6 +8,7 @@
 #include "Plane.hpp"
 
 #include <iostream>
+#include <glm/glm.hpp>
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 
@@ -15,8 +16,11 @@
 #define N_TRANS_ENT 1
 
 Resources::Resources(unsigned int maxEntities, unsigned int maxParticleSystems, 
-	unsigned int maxModels, unsigned int maxShaders, unsigned int maxSkyBoxes,
-	unsigned int maxPlanes){
+					unsigned int maxModels, unsigned int maxShaders,
+					unsigned int maxSkyBoxes, unsigned int maxPlanes){
+	t1 = 0;
+	t2 = 0;
+	delta = 0;
 	nEntities = 0;
 	nTransparentEntities = 0;
 	nParticleSystems = 0;
@@ -34,6 +38,23 @@ Resources::Resources(unsigned int maxEntities, unsigned int maxParticleSystems,
 	planes = new Plane[maxPlanes];
 	std::cout << "Resources instantiated" << std::endl;
 }
+
+// Time
+
+void Resources::setCurrentTime(double t){
+	t1 = t2;
+	t2 = t;
+	delta = t2 - t1;
+}
+
+double Resources::getCurrentTime(){
+	return t2;
+}
+
+double Resources::getTimeDelta(){
+	return delta;
+}
+
 
 // Logic
 // Get
@@ -185,4 +206,52 @@ unsigned int Resources::addPlane(Plane plane, std::string name) {
 	planeNames[name] = nPlanes;
 	return nPlanes++;
 }
+
+// Physics/Logic
+
+void Resources::registerCharacter(unsigned int character){
+	this->character = character;
+}
+
+void Resources::registerTrack(unsigned int track){
+	this->track = track;
+}
+
+void Resources::registerAsteroid(unsigned int asteroid){
+	asteroids.push_back(asteroid);
+}
+
+Entity *Resources::getCharacterPointer(){
+	return entities + character;
+}
+
+Entity *Resources::getTrackPointer(){
+	return transparentEntities + track;
+}
+
+std::vector<unsigned int> &Resources::getAsteroidIndices(){
+	return asteroids;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 

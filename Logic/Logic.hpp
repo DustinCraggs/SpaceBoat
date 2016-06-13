@@ -8,6 +8,7 @@
 #include "Entity.hpp"
 
 #include <GLFW/glfw3.h>
+#include <chrono>
 
 class Logic{
 public:
@@ -27,6 +28,9 @@ private:
 	void randomizeAsteroidData(Entity* asteroid);
 	void loadRandomAsteroids();
 	Resources *resources;
+
+	// Time
+	std::chrono::system_clock::time_point t0;
 
 	// Camera stuff
 	Camera *camera;

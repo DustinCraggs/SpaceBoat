@@ -8,7 +8,7 @@
 
 // Libraries
 #include "tinydir.h"
-#include "shader.hpp"
+#include "Shader.hpp"
 
 #include <iostream>
 #include <string>

@@ -10,6 +10,7 @@
 
 #include <string>
 #include <map>
+#include <glm/glm.hpp>
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 
@@ -18,6 +19,11 @@ public:
 	Resources(unsigned int maxEntities, unsigned int maxParticleSystems, 
 		unsigned int maxModels, unsigned int maxShaders, 
 		unsigned int maxSkyboxes, unsigned int maxPlanes);
+	// Time
+	void setCurrentTime(double t);
+	double getCurrentTime();
+	double getTimeDelta();
+
 	// Logic
 	// Get
 	bool hasSkybox();
@@ -64,8 +70,21 @@ public:
 	unsigned int addShader(unsigned int shader, std::string name);
 	unsigned int addSkyBox(SkyBox skybox, std::string name);
 	unsigned int addPlane(Plane plane, std::string name);
+
+	// Physics/Logic
+	double charXAcceleration;
+	double charZAcceleration;
+	void registerCharacter(unsigned int character);
+	void registerTrack(unsigned int track);
+	void registerAsteroid(unsigned int asteroid);
+	Entity *getCharacterPointer();
+	Entity *getTrackPointer();
+	std::vector<unsigned int> &getAsteroidIndices();
 private:
-	float dt;
+	double t1;
+	double t2;
+	double delta;
+
 	// Logic
 	bool m_hasSkybox;
 	Entity currentSkybox;
@@ -78,7 +97,7 @@ private:
 	// Physics
 	unsigned int nParticleSystems;
 	ParticleSystem *particleSystems;
-	
+
 	// Graphics
 	GLFWwindow *window;
 
@@ -99,6 +118,12 @@ private:
 	std::map<std::string, unsigned int> planeNames;
 
 	Camera camera;	
+
+	// Physics/Logic
+	unsigned int character;
+	unsigned int track;
+	std::vector<unsigned int> asteroids;
 };
+
 
 #endif

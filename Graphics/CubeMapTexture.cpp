@@ -2,7 +2,7 @@
 
 #include "stb_image.h"
 
-#include <util.h>
+// #include <util.h>
 #include <GL/glew.h>
 #include <string>
 #include <iostream>

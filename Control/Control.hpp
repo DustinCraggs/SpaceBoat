@@ -1,5 +1,5 @@
-#ifndef CONTROL_H
-#define CONTROL_H
+// #ifndef CONTROL_H
+// #define CONTROL_H
 
 #include "Logic.hpp"
 #include "Graphics.hpp"
@@ -19,7 +19,7 @@ private:
 	Resources resources;
 	Graphics graphics;
 	Logic logic;
-	// Physics physics;
+	Physics physics;
 };
 
-#endif
+// #endif
